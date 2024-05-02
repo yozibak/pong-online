@@ -14,7 +14,6 @@ export const createVector = ({ x, y }: Position = { x: 0, y: 0 }): PongVector =>
     set(position) {
       vector.set(position.x, position.y)
     },
-    
     get angle() {
       return toDegrees(vector.heading())
     },

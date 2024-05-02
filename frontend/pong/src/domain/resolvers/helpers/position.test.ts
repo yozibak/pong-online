@@ -1,4 +1,4 @@
-import { getMiddleByX, reflectDiff } from './position'
+import { getMiddleYByRatio, getMiddleRatio, reflectDiff } from './position'
 
 test.each([
   [4, 16],
@@ -9,8 +9,15 @@ test.each([
 })
 
 test.each([
-  [{ x: 380, y: 200 }, { x: 420, y: 240 }, 400, 220],
-  [{ x: 25, y: 200 }, { x: 15, y: 240 }, 20, 220],
-])(`${getMiddleByX.name}`, (position, next, middleX, expectedY) => {
-  expect(getMiddleByX(position, next, middleX)).toMatchObject({ x: middleX, y: expectedY })
+  [{ x: 380, y: 200 }, { x: 420, y: 240 }, 0.5, 220],
+  [{ x: 25, y: 200 }, { x: 15, y: 240 }, 0.5, 220],
+])(`${getMiddleYByRatio.name}`, (position, next, ratio, expectedY) => {
+  expect(getMiddleYByRatio(position, next, ratio)).toBe(expectedY)
+})
+
+test.each([
+  [{ x: 380, y: 200 }, { x: 420, y: 240 }, 400, 0.5],
+  [{ x: 25, y: 200 }, { x: 15, y: 240 }, 20, 0.5],
+])(`${getMiddleRatio.name}`, (position, next, middleX, ratio) => {
+  expect(getMiddleRatio(position, next, middleX)).toBeCloseTo(ratio)
 })

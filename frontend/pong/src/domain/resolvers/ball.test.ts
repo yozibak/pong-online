@@ -1,6 +1,6 @@
 import { createVector } from '../../data'
 import { Ball } from '../../data/types'
-import { handleEdgeHit } from './ball'
+import { handleBarHit, handleEdgeHit } from './ball'
 
 test(`${handleEdgeHit.name}`, () => {
   const ball: Ball = {
@@ -12,3 +12,6 @@ test(`${handleEdgeHit.name}`, () => {
   expect(nextPos.y).toBeCloseTo(17)
 })
 
+test(`${handleBarHit.name}`, () => {
+  
+})

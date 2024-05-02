@@ -11,4 +11,3 @@ const resolveUpdown = (upDown: UpDown | null) => {
   if (upDown === 'down') return BarVelocity
   return 0
 }
-
