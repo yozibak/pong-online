@@ -4,6 +4,7 @@ export type PongState = {
   playerState: Record<PlayerNumber, PlayerState>
   ball: Ball
   score: Score
+  hasGameset: boolean
 }
 
 export type PlayerState = {

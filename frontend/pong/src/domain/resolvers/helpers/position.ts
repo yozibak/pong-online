@@ -35,7 +35,7 @@ export const reflectDiff = (val: number, min: number, max: number): number => {
 export const willBallHitEdge = (position: Position): boolean =>
   position.y < TopThreshold || position.y > BottomThreshold
 
-export const willBallBeNearBar = (position: Position): EdgePosition | undefined => {
+export const getBarSide = (position: Position): EdgePosition | undefined => {
   if (position.x > RightThreshold) return 'right'
   if (position.x < LeftThreshold) return 'left'
 }

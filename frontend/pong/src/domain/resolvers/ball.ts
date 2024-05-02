@@ -1,7 +1,8 @@
-import { BarLength } from '../../config'
+import { DefaultTokenStore } from 'aws-amplify/auth/cognito'
+import { BarLength, DefaultWidth } from '../../config'
 import { expectBallPosition, sumPosition } from '../../data'
 import { Ball, PlayerNumber, PongState, Position } from '../../data/types'
-import { addBarReflectAntgle, calcEdgeReflectAngle } from './helpers/angle'
+import { calcEdgeReflectAngle } from './helpers/angle'
 import {
   EdgePosition,
   Thresholds,
@@ -9,7 +10,7 @@ import {
   getMiddleRatio,
   getMiddleYByRatio,
   getReflectedPosition,
-  willBallBeNearBar,
+  getBarSide,
   willBallHitEdge,
 } from './helpers/position'
 
@@ -40,8 +41,17 @@ export const handleEdgeHit = (ball: Ball): Position => {
 
 export const handleBarHit = (ball: Ball, next: Position, bars: BarPositions): Position => {
   if (ball.missed) return next
-  const edge = willBallBeNearBar(next)
+  const edge = getBarSide(next)
   if (!edge) return next
+  return handleHitJudge(ball, next, bars, edge)
+}
+
+export const handleHitJudge = (
+  ball: Ball,
+  next: Position,
+  bars: BarPositions,
+  edge: EdgePosition
+): Position => {
   const ratioAtThereshold = getMiddleRatio(ball.position, next, Thresholds[edge])
   const yAtThreshold = getMiddleYByRatio(ball.position, next, ratioAtThereshold)
   const posAtThreshold: Position = { x: Thresholds[edge], y: yAtThreshold }
@@ -50,7 +60,10 @@ export const handleBarHit = (ball: Ball, next: Position, bars: BarPositions): Po
     const hitAngle = determineHitAngle(yAtThreshold, bar.y)
     const finalAngle = decideFinalAngle(hitAngle, edge)
     ball.movement.setAngle(finalAngle)
-    return sumPosition(posAtThreshold, calcReducedVectorByRatio(ball.movement, (1 - ratioAtThereshold)))
+    return sumPosition(
+      posAtThreshold,
+      calcReducedVectorByRatio(ball.movement, 1 - ratioAtThereshold)
+    )
   } else {
     ball.missed = true
     return next
@@ -79,7 +92,13 @@ const getHitAngle = (abs: number) => {
   return 15
 }
 
-const decideFinalAngle = (angle: number, edge: EdgePosition,) => {
+const decideFinalAngle = (angle: number, edge: EdgePosition) => {
   if (edge === 'right') return 180 - angle
   return angle
 }
+
+export const isBallOut = (ball: Ball) => {
+  if (!ball.missed) return false
+  return ball.position.x <= 0 || ball.position.x >= DefaultWidth
+}
+

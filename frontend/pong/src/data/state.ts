@@ -3,6 +3,11 @@ import { ReducerMap, makeStore } from './helpers/store'
 import { createVector } from './primitives'
 import { Ball, PlayerCommand, PlayerNumber, PongState } from './types'
 
+export const initBall = (): Ball => ({
+  position: createVector({ x: DefaultWidth / 2, y: DefaultHeight / 2 }),
+  movement: createVector({ x: -BallSize / 2, y: -BallSize / 2 }),
+})
+
 const InitialState: PongState = {
   playerNumber: 1,
   playerState: {
@@ -25,14 +30,12 @@ const InitialState: PongState = {
       },
     },
   },
-  ball: {
-    position: createVector({ x: DefaultWidth / 2, y: DefaultHeight / 2 }),
-    movement: createVector({ x: -BallSize / 2, y: -BallSize / 2 }),
-  },
+  ball: initBall(),
   score: {
     1: 0,
     2: 0,
   },
+  hasGameset: false
 }
 
 const reducers = {
@@ -49,6 +52,15 @@ const reducers = {
   setBall: (s) => (ball: Ball) => {
     s.ball = ball
   },
+  incrementScore: (s) => (n: PlayerNumber) => {
+    s.score[n]++
+  },
+  resetBall: (s) => () => {
+    s.ball = initBall()
+  },
+  gameset: (s) => () => {
+    s.hasGameset = true
+  }
 } satisfies ReducerMap<PongState>
 
 export const makePongStore = () => makeStore<PongState>(InitialState)(reducers)

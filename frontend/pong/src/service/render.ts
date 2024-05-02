@@ -6,7 +6,7 @@ import {
   DefaultWidth,
   EdgeThickness,
 } from '../config'
-import { Position } from '../data/types'
+import { Position, Score } from '../data/types'
 import { RenderingState } from '../domain'
 
 export const renderState = (state: RenderingState) => {
@@ -18,6 +18,8 @@ export const renderState = (state: RenderingState) => {
   renderBar(state.bars[1])
   renderBar(state.bars[2])
   renderBall(state.ball)
+  renderScore(state.score)
+  renderBorder()
 }
 
 const renderBar = (position: Position) => {
@@ -31,4 +33,16 @@ const renderBall = (position: Position) => {
 const rendewrEdge = () => {
   p.rect(0, 0, DefaultWidth, EdgeThickness)
   p.rect(0, DefaultHeight - EdgeThickness, DefaultWidth, EdgeThickness)
+}
+
+const Offset = 40
+const ScoreFontSize = 40
+const renderScore = (score: Score) => {
+  p.textSize(ScoreFontSize)
+  p.text(score[1], DefaultWidth/2 - Offset - ScoreFontSize, Offset)
+  p.text(score[2], DefaultWidth/2 + Offset, Offset)
+}
+
+const renderBorder = () => {
+  p.rect(DefaultWidth/2, 0, 2, DefaultHeight)
 }
