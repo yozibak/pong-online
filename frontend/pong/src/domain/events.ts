@@ -1,6 +1,7 @@
 import { store } from '../data'
 import { buffer1, buffer2 } from './commands'
-import { resolveBallPosition, resolveBarPosition } from './resolvers'
+import { resolveBallMovement } from './resolvers/ball'
+import { resolveBarPosition } from './resolvers/bar'
 
 export const frameEvent = () => {
   // command
@@ -12,5 +13,5 @@ export const frameEvent = () => {
   // resolve state
   resolveBarPosition(1)
   resolveBarPosition(2) 
-  resolveBallPosition()
+  resolveBallMovement(store.current.ball)
 }

@@ -1,4 +1,4 @@
-import { BarLength, BarOffset, BarWidth, DefaultHeight, DefaultWidth } from '../config'
+import { BallSize, BarLength, BarOffset, BarWidth, DefaultHeight, DefaultWidth } from '../config'
 import { ReducerMap, makeStore } from './helpers/store'
 import { createVector } from './primitives'
 import { Ball, PlayerCommand, PlayerNumber, PongState } from './types'
@@ -27,7 +27,7 @@ const InitialState: PongState = {
   },
   ball: {
     position: createVector({ x: DefaultWidth / 2, y: DefaultHeight / 2 }),
-    movement: createVector({ x: -5, y: -5 }),
+    movement: createVector({ x: -BallSize/2, y: -BallSize/2 }),
   },
   score: {
     1: 0,

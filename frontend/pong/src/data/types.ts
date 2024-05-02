@@ -28,8 +28,7 @@ export type Ball = {
 export type Score = Record<PlayerNumber, number>
 
 export type PongVector = Position & {
-  add: (another: PongVector) => void
-  rotate: (angle: number) => void
+  set: (position: Position) => void
   angle: number
   setAngle: (angle: number) => void
 }

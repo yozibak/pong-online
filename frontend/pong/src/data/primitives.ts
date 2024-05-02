@@ -11,12 +11,10 @@ export const createVector = ({ x, y }: Position = { x: 0, y: 0 }): PongVector =>
     get y() {
       return vector.y
     },
-    add(another) {
-      vector.add(another.x, another.y)
+    set(position) {
+      vector.set(position.x, position.y)
     },
-    rotate(angle) {
-      vector.rotate(angle)
-    },
+    
     get angle() {
       return toDegrees(vector.heading())
     },
