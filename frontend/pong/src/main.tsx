@@ -6,7 +6,7 @@ const root = document.getElementById('root')
 if (root) {
   ReactDOM.createRoot(root).render(
     <React.StrictMode>
-      <Pong size={{ width: window.innerWidth/2, height: window.innerHeight/2 }} />
+      <Pong size={{ width: window.innerWidth, height: window.innerHeight }} />
     </React.StrictMode>
   )
 } else throw Error(`root not found`)

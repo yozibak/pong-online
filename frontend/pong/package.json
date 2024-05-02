@@ -6,7 +6,7 @@
     "dev": "vite --host",
     "build": "vite build",
     "preview": "vite preview",
-    "test": "cd ../.. && jest --selectProjects frontend",
+    "test": "cd ../.. && jest --selectProjects pong",
     "test:e2e": "vite build && playwright test"
   },
   "dependencies": {

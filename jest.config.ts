@@ -39,8 +39,14 @@ const JestConfig: Config = {
   projects: [
     {
       ...RootConfig,
-      displayName: 'frontend',
+      displayName: 'app',
       rootDir: './frontend/app',
+      testEnvironment: 'jsdom',
+    },
+    {
+      ...RootConfig,
+      displayName: 'pong',
+      rootDir: './frontend/pong',
       testEnvironment: 'jsdom',
     },
   ],

@@ -12,7 +12,7 @@ type Sketch = {
 }
 
 export const makeP5Canvas =
-  (sketch: Sketch):React.FC<PropsWithChildren<{size: CanvasSize}>> =>
+  (sketch: Sketch): React.FC<PropsWithChildren<{ size: CanvasSize }>> =>
   ({ size, children }) => {
     const [canvas, setCanvas] = useState<p5>()
     const canvasRef = useRef<HTMLDivElement>(null)
@@ -30,7 +30,11 @@ export const makeP5Canvas =
       }
     }, [canvasRef])
 
-    return <div id={`canvas-container`} style={styles(size)} ref={canvasRef} >{children}</div>
+    return (
+      <div id={`canvas-container`} style={styles(size)} ref={canvasRef}>
+        {children}
+      </div>
+    )
   }
 
 const sketchFactory = (s: Sketch, size: CanvasSize) => (p: p5) => {
@@ -45,10 +49,13 @@ const styles = ({ width, height }: CanvasSize): React.CSSProperties => ({
   width,
   height,
   overflow: 'hidden',
-  backgroundColor: 'white',
+  backgroundColor: 'rgba(0,0,0,0.9)',
   margin: '0 auto',
   touchAction: 'manipulation',
   overflowX: 'hidden',
   overflowY: 'hidden',
   overscrollBehavior: 'none',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
 })

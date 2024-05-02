@@ -1,14 +1,16 @@
 import pjson from '../package.json'
-import { FPS } from './config'
+import { DefaultHeight, DefaultWidth, FPS } from './config'
 import { makeP5Canvas } from './p5canvas'
-import { Interface } from './service/interface'
-import { renderState } from './service/render'
+import { resolveFrame } from './service'
 import { CanvasSize } from './types'
 
 const setup =
   ({ width, height }: CanvasSize) =>
   () => {
-    p.createCanvas(width, height)
+    if (width < DefaultWidth || height < DefaultHeight) {
+      throw Error(`size collision`)
+    }
+    p.createCanvas(DefaultWidth, DefaultHeight)
     p.angleMode(p.DEGREES)
     p.frameRate(FPS)
     p.pixelDensity(1)
@@ -18,14 +20,12 @@ const VERSION = pjson.version
 
 const Pong = makeP5Canvas({
   setup,
-  draw: renderState,
+  draw: resolveFrame,
 })
 
 const PongGame: React.FC<{ size: CanvasSize }> = ({ size }) => (
   <>
-    <Pong size={size}>
-      <Interface version={VERSION} />
-    </Pong>
+    <Pong size={size} />
   </>
 )
 
