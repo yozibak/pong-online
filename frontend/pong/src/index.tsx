@@ -1,5 +1,5 @@
 import pjson from '../package.json'
-import { DefaultHeight, DefaultWidth, FPS } from './config'
+import { AspectRatio, DefaultHeight, DefaultWidth, FPS } from './config'
 import { makeP5Canvas } from './p5canvas'
 import { resolveFrame } from './service'
 import { CanvasSize } from './types'
@@ -7,13 +7,13 @@ import { CanvasSize } from './types'
 const setup =
   ({ width, height }: CanvasSize) =>
   () => {
-    if (width < DefaultWidth || height < DefaultHeight) {
-      throw Error(`size collision`)
-    }
     p.createCanvas(DefaultWidth, DefaultHeight)
-    p.angleMode(p.DEGREES)
     p.frameRate(FPS)
-    p.pixelDensity(1)
+
+    // resize
+    const canvas = document.getElementsByTagName('canvas')[0]
+    canvas.style.width = `${width / AspectRatio}px`
+    canvas.style.height = `${height}px`
   }
 
 const VERSION = pjson.version

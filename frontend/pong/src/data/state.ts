@@ -1,7 +1,7 @@
 import { BarLength, BarOffset, BarWidth, DefaultHeight, DefaultWidth } from '../config'
 import { ReducerMap, makeStore } from './helpers/store'
-import { createVector, resolveCommand } from './primitives'
-import { PlayerCommand, PlayerNumber, PongState } from './types'
+import { createVector } from './primitives'
+import { Ball, PlayerCommand, PlayerNumber, PongState } from './types'
 
 const InitialState: PongState = {
   playerNumber: 1,
@@ -9,7 +9,7 @@ const InitialState: PongState = {
     1: {
       bar: {
         x: BarOffset,
-        y: (DefaultHeight / 2) - (BarLength/2),
+        y: DefaultHeight / 2 - BarLength / 2,
       },
       command: {
         upDown: null,
@@ -18,7 +18,7 @@ const InitialState: PongState = {
     2: {
       bar: {
         x: DefaultWidth - BarOffset - BarWidth,
-        y: (DefaultHeight / 2) - (BarLength/2),
+        y: DefaultHeight / 2 - BarLength / 2,
       },
       command: {
         upDown: null,
@@ -26,8 +26,8 @@ const InitialState: PongState = {
     },
   },
   ball: {
-    position: createVector(),
-    movement: createVector(),
+    position: createVector({ x: DefaultWidth / 2, y: DefaultHeight / 2 }),
+    movement: createVector({ x: -5, y: -5 }),
   },
   score: {
     1: 0,
@@ -43,11 +43,12 @@ const reducers = {
     if (n === undefined) n = s.playerNumber
     s.playerState[n].command = command
   },
-  resolveBarPosition: (s) => (n: PlayerNumber) => {
-    const player = s.playerState[n]
-    const yDelta = resolveCommand(player.command)
-    player.bar.y += yDelta // TODO: need constraints
+  setBarPosition: (s) => (n: PlayerNumber, y: number) => {
+    s.playerState[n].bar.y = Math.max(0, Math.min(y, DefaultHeight - BarLength))
   },
+  setBall: s => (ball: Ball) => {
+    s.ball = ball
+  }
 } satisfies ReducerMap<PongState>
 
 export const makePongStore = () => makeStore<PongState>(InitialState)(reducers)

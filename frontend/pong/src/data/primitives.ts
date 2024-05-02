@@ -1,17 +1,33 @@
 import p5 from 'p5'
-import { PlayerCommand, PongVector, Position, UpDown } from './types'
-import { BarVelocity } from '../config'
+import { Ball, PongVector, Position } from './types'
+import { toDegrees, toRadians } from './helpers/utils'
 
 export const createVector = ({ x, y }: Position = { x: 0, y: 0 }): PongVector => {
-  return new p5.Vector(x, y)
+  const vector = new p5.Vector(x, y)
+  return {
+    get x() {
+      return vector.x
+    },
+    get y() {
+      return vector.y
+    },
+    add(another) {
+      vector.add(another.x, another.y)
+    },
+    rotate(angle) {
+      vector.rotate(angle)
+    },
+    get angle() {
+      return toDegrees(vector.heading())
+    },
+    setAngle(angle) {
+      vector.setHeading(toRadians(angle))
+    },
+  }
 }
 
-export const resolveCommand = (command: PlayerCommand): number => {
-  return resolveUpdown(command.upDown)
-}
+export const expectBallPosition = (ball: Ball) => sumPosition(ball.position, ball.movement)
 
-export const resolveUpdown = (upDown: UpDown | null) => {
-  if (upDown === 'up') return -BarVelocity
-  if (upDown === 'down') return BarVelocity
-  return 0
+export const sumPosition = (...positions: Position[]) => {
+  return positions.reduce((a, b) => ({ x: a.x + b.x, y: a.y + b.y }))
 }

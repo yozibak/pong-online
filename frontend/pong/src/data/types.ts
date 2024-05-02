@@ -1,4 +1,3 @@
-import p5 from 'p5'
 
 export type PongState = {
   playerNumber: PlayerNumber
@@ -28,11 +27,12 @@ export type Ball = {
 
 export type Score = Record<PlayerNumber, number>
 
-/**
- * wrapper for p5.Vector
- * *maybe replace p5 in the later dev
- */
-export type PongVector = p5.Vector
+export type PongVector = Position & {
+  add: (another: PongVector) => void
+  rotate: (angle: number) => void
+  angle: number
+  setAngle: (angle: number) => void
+}
 
 export type Position = { x: number; y: number }
 

@@ -3,6 +3,8 @@ export const BarWidth = 10
 export const BarOffset = 10
 export const BarLength = 100
 export const BarVelocity = 10
+export const EdgeThickness = 10
+export const BallSize = 10
 
 export const AspectRatio = 4 / 3
 export const DefaultHeight = 400
