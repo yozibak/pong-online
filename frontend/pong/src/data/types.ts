@@ -23,6 +23,7 @@ export type Bar = {
 export type Ball = {
   position: PongVector
   movement: PongVector
+  missed?: boolean
 }
 
 export type Score = Record<PlayerNumber, number>

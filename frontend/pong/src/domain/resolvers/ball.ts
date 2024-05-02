@@ -1,12 +1,21 @@
-import { BottomThreshold, LeftThreshold, RightThreshold, TopThreshold } from '../../config'
+import { BarLength } from '../../config'
 import { expectBallPosition } from '../../data'
-import { Ball, Position } from '../../data/types'
+import { Ball, PlayerNumber, PongState, Position } from '../../data/types'
+import { reflectMovementAngle } from './helpers/angle'
+import { EdgePosition, Thresholds, getMiddleByX, getReflectedPosition, willBallBeNearBar, willBallHitEdge } from './helpers/position'
 
-type SurfaceAngle = 'hori' | 'vert'
+export type SurfaceAngle = 'hori' | 'vert'
 
-export const resolveBallMovement = (ball: Ball): void => {
+export type BarPositions = Record<PlayerNumber, Position>
+
+export const getBarPositions = (playerState: PongState['playerState']):BarPositions => ({
+  1: playerState[1].bar,
+  2: playerState[2].bar
+})
+
+export const resolveBallMovement = (ball: Ball, bars: BarPositions): void => {
   let nextPos = handleEdgeHit(ball)
-  nextPos = handleBarHit(ball, nextPos)
+  nextPos = handleBarHit(ball, nextPos, bars)
   ball.position.set(nextPos)
 }
 
@@ -19,54 +28,32 @@ export const handleEdgeHit = (ball: Ball): Position => {
   return next
 }
 
-export const handleBarHit = (ball: Ball, next: Position): Position => {
-  if (isBallNearBar(ball.position)) {
-    reflectMovementAngle(ball, 'vert')
-    return getReflectedPosition(next, 'vert')
+export const handleBarHit = (ball: Ball, next: Position, bars: BarPositions): Position => {
+  if (ball.missed) return next
+  const edge = willBallBeNearBar(next)
+  if (edge) {
+    const posAtThreshold = getMiddleByX(ball.position, next, Thresholds[edge])
+    const bar = getBar(edge, bars)
+    if (willHit(posAtThreshold, bar)) {
+      reflectMovementAngle(ball, 'vert')
+      return getReflectedPosition(next, 'vert')
+    } else {
+      ball.missed = true
+    }
   }
   return next
 }
 
-const willBallHitEdge = (position: Position) =>
-  position.y < TopThreshold || position.y > BottomThreshold
-
-const isBallNearBar = (position: Position): boolean =>
-  position.x > RightThreshold || position.x < LeftThreshold
-
-export const reflectMovementAngle = (ball: Ball, surface: SurfaceAngle): void => {
-  const reflected = reflectAngle(ball.movement.angle, surface)
-  ball.movement.setAngle(reflected)
+const getBar = (edge: EdgePosition, bars: BarPositions): Position => {
+  if (edge === 'right') return bars[2]
+  if (edge === 'left') return bars[1]
+  throw Error()
 }
 
-export const reflectAngle = (angle: number, surface: SurfaceAngle): number => {
-  const surfaceAngle = surface === 'hori' ? 360 : 180
-  return surfaceAngle - angle
+export const willHit = (position: Position, bar: Position):boolean => {
+  return (position.y < bar.y + BarLength/2 && position.y > bar.y - BarLength/2) 
 }
 
-export const getReflectedPosition = (
-  position: Position,
-  surface: SurfaceAngle,
-  thresholds = {
-    top: TopThreshold,
-    bottom: BottomThreshold,
-    left: LeftThreshold,
-    right: RightThreshold,
-  }
-): Position => {
-  if (surface === 'hori') {
-    return {
-      x: position.x,
-      y: reflectDiff(position.y, thresholds.top, thresholds.bottom),
-    }
-  } else
-    return {
-      x: reflectDiff(position.x, thresholds.left, thresholds.right),
-      y: position.y,
-    }
-}
-
-export const reflectDiff = (val: number, min: number, max: number): number => {
-  if (val < min) return min + (min - val)
-  if (val > max) return max - (val - max)
-  return val
+export const determineHitAngle = (position: Position, bar: Position) => {
+  const distance = position.y - bar.y
 }

@@ -27,7 +27,7 @@ const InitialState: PongState = {
   },
   ball: {
     position: createVector({ x: DefaultWidth / 2, y: DefaultHeight / 2 }),
-    movement: createVector({ x: -BallSize/2, y: -BallSize/2 }),
+    movement: createVector({ x: -BallSize / 2, y: -BallSize / 2 }),
   },
   score: {
     1: 0,
@@ -44,11 +44,11 @@ const reducers = {
     s.playerState[n].command = command
   },
   setBarPosition: (s) => (n: PlayerNumber, y: number) => {
-    s.playerState[n].bar.y = Math.max(0, Math.min(y, DefaultHeight - BarLength))
+    s.playerState[n].bar.y = Math.max(BarLength / 2, Math.min(y, DefaultHeight - BarLength / 2))
   },
-  setBall: s => (ball: Ball) => {
+  setBall: (s) => (ball: Ball) => {
     s.ball = ball
-  }
+  },
 } satisfies ReducerMap<PongState>
 
 export const makePongStore = () => makeStore<PongState>(InitialState)(reducers)

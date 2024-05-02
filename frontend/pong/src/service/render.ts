@@ -21,7 +21,7 @@ export const renderState = (state: RenderingState) => {
 }
 
 const renderBar = (position: Position) => {
-  p.rect(position.x, position.y, BarWidth, BarLength)
+  p.rect(position.x, position.y - BarLength/2, BarWidth, BarLength)
 }
 
 const renderBall = (position: Position) => {
