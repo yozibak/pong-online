@@ -1,0 +1,52 @@
+version = 0.1
+
+[dev]
+[dev.global.parameters]
+region = "ap-northeast-1"
+resolve_s3 = true
+s3_prefix = "pong-online-dev"
+stack_name = "pong-online-dev"
+[dev.validate.parameters]
+lint = true
+[dev.build.parameters]
+cached = true
+[dev.deploy.parameters]
+capabilities = "CAPABILITY_IAM"
+confirm_changeset = false
+fail_on_empty_changeset = false
+
+parameter_overrides = "Env=Dev"
+
+[test]
+[test.global.parameters]
+region = "ap-northeast-1"
+s3_prefix = "pong-online-test"
+stack_name = "pong-online-test"
+
+[test.deploy.parameters]
+confirm_changeset = false
+fail_on_empty_changeset = false
+
+parameter_overrides = "Env=Test"
+template = "template-test.yaml"
+
+[prod]
+[prod.global.parameters]
+region = "ap-northeast-1"
+s3_prefix = "pong-online-prod"
+stack_name = "pong-online-prod"
+
+[prod.deploy.parameters]
+confirm_changeset = false
+fail_on_empty_changeset = false
+
+parameter_overrides = "Env=Prod"
+template = "template-prod.yaml"
+
+[pipeline]
+[pipeline.deploy.parameters]
+capabilities = "CAPABILITY_NAMED_IAM"
+confirm_changeset = false
+s3_prefix = "pong-online-prod"
+stack_name = "pong-online-pipeline"
+template = "pipeline/template.yaml"
