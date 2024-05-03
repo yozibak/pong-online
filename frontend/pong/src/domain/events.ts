@@ -1,27 +1,30 @@
 import { store } from '../data'
-import { buffer1, buffer2 } from './commands'
-import { getBarPositions, isBallOut, resolveBallMovement } from './resolvers/ball'
-import { resolveBarPosition } from './resolvers'
-import { getBarSide } from './resolvers/helpers/position'
 import { PlayerNumber } from '../data/types'
+import { buffer1, buffer2 } from './commands'
+import { calculateNextState } from './resolvers'
+import { isBallOut } from './resolvers/hit'
+import { getBarSide } from './resolvers/helpers/position'
 import { checkWinner } from './resolvers/score'
 
 export const frameEvent = () => {
   if (store.current.hasGameset) return
-  // command
+  importInput()
+  const snapshot = store.current
+  const nextSnapshot = calculateNextState(snapshot)
+  store.updateBySnapshot(nextSnapshot)
+
+  // resolveBallMovement(store.current.ball, getBarPositions(store.current.bars))
+
+  if (isBallOut(store.current.ball)) {
+    pointEvent()
+  }
+}
+
+const importInput = () => {
   store.updateCommand(buffer1.command, buffer1.playerNumber)
   store.updateCommand(buffer2.command, buffer2.playerNumber)
 
-  // maybe update ball position here (invoked by netwrok)
-
-  // resolve state
-  resolveBarPosition(1)
-  resolveBarPosition(2)
-  resolveBallMovement(store.current.ball, getBarPositions(store.current.playerState))
-
-  if (isBallOut(store.current.ball)) {
-    pointEvent()  
-  }
+  // import network input here //
 }
 
 const pointEvent = () => {
@@ -36,7 +39,6 @@ const pointEvent = () => {
     gameSetEvent()
   }
 }
-
 
 const restartEvent = () => {
   store.resetBall()

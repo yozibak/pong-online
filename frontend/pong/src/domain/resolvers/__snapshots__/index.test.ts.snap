@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`calculateNextState can calculate next state 1`] = `
+{
+  "ball": {
+    "missed": undefined,
+    "movement": {
+      "angle": 44.99999999999999,
+      "mag": 14.142135623730953,
+      "set": [Function],
+      "setAngle": [Function],
+      "x": 10.000000000000002,
+      "y": 10,
+    },
+    "position": {
+      "angle": 45,
+      "mag": 438.4062043356595,
+      "set": [Function],
+      "setAngle": [Function],
+      "x": 310,
+      "y": 310,
+    },
+  },
+  "bars": {
+    "1": {
+      "command": {
+        "upDown": "up",
+      },
+      "position": {
+        "x": 20,
+        "y": 290,
+      },
+    },
+    "2": {
+      "command": {
+        "upDown": "up",
+      },
+      "position": {
+        "x": 580,
+        "y": 290,
+      },
+    },
+  },
+  "frameAgo": undefined,
+}
+`;
+
+exports[`calculateNextState can recursively calculate current state from old network snapshot 1`] = `
+{
+  "ball": {
+    "missed": undefined,
+    "movement": {
+      "angle": 44.99999999999999,
+      "mag": 14.142135623730953,
+      "set": [Function],
+      "setAngle": [Function],
+      "x": 10.000000000000004,
+      "y": 10,
+    },
+    "position": {
+      "angle": 45,
+      "mag": 452.54833995939043,
+      "set": [Function],
+      "setAngle": [Function],
+      "x": 320,
+      "y": 320,
+    },
+  },
+  "bars": {
+    "1": {
+      "command": {
+        "upDown": "up",
+      },
+      "position": {
+        "x": 20,
+        "y": 280,
+      },
+    },
+    "2": {
+      "command": {
+        "upDown": "up",
+      },
+      "position": {
+        "x": 580,
+        "y": 280,
+      },
+    },
+  },
+  "frameAgo": undefined,
+}
+`;

@@ -1,10 +1,19 @@
-import { BarVelocity } from '../../config'
-import { resolveBarCommand } from './bar'
+import { Bar } from '../../data/types'
+import { resolveBarPosition } from './bar'
 
-test(`${resolveBarCommand.name}`, () => {
-  expect(
-    resolveBarCommand({
+test(`${resolveBarPosition.name}`, () => {
+  const bar: Bar = {
+    position: {
+      x: 20,
+      y: 300,
+    },
+    command: {
       upDown: 'up',
-    })
-  ).toBe(-BarVelocity)
+    },
+  }
+  const result = resolveBarPosition(bar, 50)
+  expect(result.position).toMatchObject({
+    x: 20,
+    y: 250,
+  })
 })

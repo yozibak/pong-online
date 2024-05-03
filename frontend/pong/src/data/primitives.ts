@@ -1,6 +1,6 @@
 import p5 from 'p5'
-import { Ball, PongVector, Position } from './types'
 import { toDegrees, toRadians } from './helpers/utils'
+import { PongVector, Position } from './types'
 
 export const createVector = ({ x, y }: Position = { x: 0, y: 0 }): PongVector => {
   const vector = new p5.Vector(x, y)
@@ -20,10 +20,16 @@ export const createVector = ({ x, y }: Position = { x: 0, y: 0 }): PongVector =>
     setAngle(angle) {
       vector.setHeading(toRadians(angle))
     },
+    get mag() {
+      return vector.mag()
+    },
   }
 }
 
-export const expectBallPosition = (ball: Ball) => sumPosition(ball.position, ball.movement)
+export const createVectorFromAngle = (angle: number, mag: number):PongVector => {
+  return createVector(p5.Vector.fromAngle(toRadians(angle), mag))
+}
+
 
 export const sumPosition = (...positions: Position[]) => {
   return positions.reduce((a, b) => ({ x: a.x + b.x, y: a.y + b.y }))

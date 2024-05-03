@@ -1,24 +1,20 @@
-
 export type PongState = {
   playerNumber: PlayerNumber
-  playerState: Record<PlayerNumber, PlayerState>
+  bars: PlayerBars
   ball: Ball
   score: Score
   hasGameset: boolean
 }
 
-export type PlayerState = {
-  bar: Position
+export type PlayerBars = Record<PlayerNumber, Bar>
+
+export type Bar = {
+  position: Position
   command: PlayerCommand
 }
 
 export type PlayerCommand = {
   upDown: UpDown | null
-  time?: never // for network commands with latency
-}
-
-export type Bar = {
-  position: Position
 }
 
 export type Ball = {
@@ -33,6 +29,7 @@ export type PongVector = Position & {
   set: (position: Position) => void
   angle: number
   setAngle: (angle: number) => void
+  mag: number
 }
 
 export type Position = { x: number; y: number }

@@ -1,6 +1,7 @@
 import { BottomThreshold, LeftThreshold, RightThreshold, TopThreshold } from '../../../config'
 import { Position } from '../../../data/types'
-import { SurfaceAngle } from '../ball'
+
+export type SurfaceAngle = 'hori' | 'vert'
 
 export type EdgePosition = 'right' | 'left' | 'top' | 'bottom'
 
@@ -32,9 +33,6 @@ export const reflectDiff = (val: number, min: number, max: number): number => {
   return val
 }
 
-export const willBallHitEdge = (position: Position): boolean =>
-  position.y < TopThreshold || position.y > BottomThreshold
-
 export const getBarSide = (position: Position): EdgePosition | undefined => {
   if (position.x > RightThreshold) return 'right'
   if (position.x < LeftThreshold) return 'left'
@@ -57,7 +55,7 @@ export const Thresholds: Record<EdgePosition, number> = {
   bottom: BottomThreshold,
 }
 
-export const calcReducedVectorByRatio = (vec: Position, ratio: number) => ({
+export const calcReducedDelta = (vec: Position, ratio: number) => ({
   x: vec.x * ratio,
-  y: vec.y * ratio
+  y: vec.y * ratio,
 })

@@ -9,8 +9,8 @@ export type RenderingState = {
 
 export const getRenderingState = (): RenderingState => ({
   bars: {
-    1: store.current.playerState[1].bar,
-    2: store.current.playerState[2].bar,
+    1: store.current.bars[1].position,
+    2: store.current.bars[2].position,
   },
   ball: store.current.ball.position,
   score: store.current.score

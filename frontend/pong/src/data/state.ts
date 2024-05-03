@@ -1,4 +1,5 @@
-import { BallSize, BarLength, BarOffset, BarWidth, DefaultHeight, DefaultWidth } from '../config'
+import { BallSize, BarLength, DefaultHeight, DefaultWidth, LeftThreshold, RightThreshold } from '../config'
+import { StateSnapshot } from '../domain/resolvers'
 import { ReducerMap, makeStore } from './helpers/store'
 import { createVector } from './primitives'
 import { Ball, PlayerCommand, PlayerNumber, PongState } from './types'
@@ -10,10 +11,10 @@ export const initBall = (): Ball => ({
 
 const InitialState: PongState = {
   playerNumber: 1,
-  playerState: {
+  bars: {
     1: {
-      bar: {
-        x: BarOffset,
+      position: {
+        x: LeftThreshold,
         y: DefaultHeight / 2 - BarLength / 2,
       },
       command: {
@@ -21,8 +22,8 @@ const InitialState: PongState = {
       },
     },
     2: {
-      bar: {
-        x: DefaultWidth - BarOffset - BarWidth,
+      position: {
+        x: RightThreshold,
         y: DefaultHeight / 2 - BarLength / 2,
       },
       command: {
@@ -35,7 +36,7 @@ const InitialState: PongState = {
     1: 0,
     2: 0,
   },
-  hasGameset: false
+  hasGameset: false,
 }
 
 const reducers = {
@@ -44,10 +45,7 @@ const reducers = {
   },
   updateCommand: (s) => (command: PlayerCommand, n?: PlayerNumber) => {
     if (n === undefined) n = s.playerNumber
-    s.playerState[n].command = command
-  },
-  setBarPosition: (s) => (n: PlayerNumber, y: number) => {
-    s.playerState[n].bar.y = Math.max(BarLength / 2, Math.min(y, DefaultHeight - BarLength / 2))
+    s.bars[n].command = command
   },
   setBall: (s) => (ball: Ball) => {
     s.ball = ball
@@ -60,7 +58,11 @@ const reducers = {
   },
   gameset: (s) => () => {
     s.hasGameset = true
-  }
+  },
+  updateBySnapshot: (s) => (snapshot: StateSnapshot) => {
+    s.ball = snapshot.ball
+    s.bars = snapshot.bars
+  },
 } satisfies ReducerMap<PongState>
 
 export const makePongStore = () => makeStore<PongState>(InitialState)(reducers)

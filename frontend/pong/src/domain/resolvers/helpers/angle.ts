@@ -1,5 +1,4 @@
-import { SurfaceAngle } from '../ball'
-import { EdgePosition } from './position'
+import { EdgePosition, SurfaceAngle } from './position'
 
 export const calcEdgeReflectAngle = (angle: number, surface: SurfaceAngle): number => {
   const surfaceAngle = surface === 'hori' ? 360 : 180

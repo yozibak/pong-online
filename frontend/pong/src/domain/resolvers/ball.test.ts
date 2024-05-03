@@ -1,17 +1,14 @@
-import { createVector } from '../../data'
-import { Ball } from '../../data/types'
-import { handleBarHit, handleEdgeHit } from './ball'
+import { createVector } from "../../data";
+import { Ball } from "../../data/types";
+import { resolveBallDestination } from "./ball";
 
-test(`${handleEdgeHit.name}`, () => {
+test(`${resolveBallDestination.name}`, () => {
   const ball: Ball = {
     position: createVector({ x: 60, y: 13 }),
     movement: createVector({ x: -10, y: -10 }),
   }
-  const nextPos = handleEdgeHit(ball)
-  expect(nextPos.x).toBeCloseTo(50)
-  expect(nextPos.y).toBeCloseTo(17)
-})
-
-test(`${handleBarHit.name}`, () => {
-  
+  const dest = resolveBallDestination(ball)
+  expect([135, 135 + 360]).toContain(dest.angle)
+  expect(dest.position.x).toBeCloseTo(50)
+  expect(dest.position.y).toBeCloseTo(17) // bounce on edge
 })
