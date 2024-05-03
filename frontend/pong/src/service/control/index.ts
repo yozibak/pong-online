@@ -6,30 +6,18 @@ export const detectControl = () => {
 
 const detectKeys = () => {
   if (isKeyDown('w')) {
-    buffer1.update({
-      upDown: 'up',
-    })
+    buffer1.update('up')
   } else if (isKeyDown('s')) {
-    buffer1.update({
-      upDown: 'down',
-    })
+    buffer1.update('down')
   } else {
-    buffer1.update({
-      upDown: null,
-    })
+    buffer1.update(null)
   }
   if (isKeyDown('o')) {
-    buffer2.update({
-      upDown: 'up',
-    })
+    buffer2.update('up')
   } else if (isKeyDown('k')) {
-    buffer2.update({
-      upDown: 'down',
-    })
+    buffer2.update('down')
   } else {
-    buffer2.update({
-      upDown: null
-    })
+    buffer2.update(null)
   }
 }
 

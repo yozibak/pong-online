@@ -13,9 +13,7 @@ export type Bar = {
   command: PlayerCommand
 }
 
-export type PlayerCommand = {
-  upDown: UpDown | null
-}
+export type PlayerCommand = UpDown | null
 
 export type Ball = {
   position: PongVector
@@ -30,6 +28,7 @@ export type PongVector = Position & {
   angle: number
   setAngle: (angle: number) => void
   mag: number
+  position: Position
 }
 
 export type Position = { x: number; y: number }

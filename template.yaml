@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: 2010-09-09
 Description: >-
-  serverless chat backend
+  online pong backend
 Transform:
   - AWS::Serverless-2016-10-31
 
@@ -40,13 +40,13 @@ Resources:
       Description: message forwarding datasource for subscription
       Type: NONE
 
-  MutationSendMessage:
+  MutationSendData:
     Type: AWS::AppSync::Resolver
     DependsOn: Schema
     Properties:
       ApiId: !GetAtt GraphQLApi.ApiId
       TypeName: Mutation
-      FieldName: sendMessage
+      FieldName: sendData
       DataSourceName: !GetAtt ForwardMessageDataSource.Name
       Runtime:
         Name: APPSYNC_JS

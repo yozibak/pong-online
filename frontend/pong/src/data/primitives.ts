@@ -23,6 +23,12 @@ export const createVector = ({ x, y }: Position = { x: 0, y: 0 }): PongVector =>
     get mag() {
       return vector.mag()
     },
+    get position(): Position {
+      return {
+        x: vector.x,
+        y: vector.y
+      }
+    }
   }
 }
 

@@ -20,8 +20,8 @@ export const resolveBarPosition = (bar: Bar, barVelocity = BarVelocity): Bar => 
 }
 
 export const resolveBarCommand = (command: PlayerCommand, barVelocity: number): number => {
-  if (command.upDown === 'up') return -barVelocity
-  if (command.upDown === 'down') return barVelocity
+  if (command === 'up') return -barVelocity
+  if (command === 'down') return barVelocity
   return 0
 }
 

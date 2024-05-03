@@ -7,9 +7,7 @@ export interface CommandManager {
 }
 
 export const makeCommandBuffer = (playerNumber: PlayerNumber): CommandManager => {
-  let command: PlayerCommand = {
-    upDown: null
-  }
+  let command: PlayerCommand = null
   return {
     get playerNumber() {
       return playerNumber

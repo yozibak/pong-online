@@ -1,15 +1,56 @@
 type Message {
-  roomID: String!
-  username: String!
-  text: String!
+  gameID: String!
+  playerNumber: Int!
+  ball: Ball!
+  bar: Bar!
+  frameCount: Int!
+}
+
+input BallInput {
+  position: VectorInput!
+  movement: VectorInput!
+  missed: Boolean
+}
+
+type Ball {
+  position: Vector!
+  movement: Vector!
+  missed: Boolean
+}
+
+input BarInput {
+  position: VectorInput!
+  command: String!
+}
+
+type Bar {
+  position: Vector!
+  command: String!
+}
+
+input VectorInput {
+  x: Float!
+  y: Float!
+}
+
+type Vector {
+  x: Float!
+  y: Float!
 }
 
 type Mutation {
-  sendMessage(text: String!, roomID: String!, username: String!): Message
+  sendData(
+    gameID: String!
+    playerNumber: Int!
+    ball: BallInput!
+    bar: BarInput!
+    frameCount: Int!
+  ): Message
 }
 
 type Subscription {
-  subscribeChatRoom(roomID: String!): Message @aws_subscribe(mutations: ["sendMessage"])
+  subscribeGame(gameID: String!, playerNumber: Int!): Message
+    @aws_subscribe(mutations: ["sendData"])
 }
 
 type Query {

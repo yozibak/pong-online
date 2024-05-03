@@ -1,5 +1,6 @@
 import { store } from "../data"
 import { PlayerNumber, Position, Score } from "../data/types"
+import { StateSnapshot } from "./resolvers"
 
 export type RenderingState = {
   bars: Record<PlayerNumber, Position>
@@ -14,4 +15,9 @@ export const getRenderingState = (): RenderingState => ({
   },
   ball: store.current.ball.position,
   score: store.current.score
+})
+
+export const getNetworkPayload = (): StateSnapshot => ({
+  ball: store.current.ball,
+  bars: store.current.bars
 })

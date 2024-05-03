@@ -7,6 +7,10 @@ exports[`calculateNextState can calculate next state 1`] = `
     "movement": {
       "angle": 44.99999999999999,
       "mag": 14.142135623730953,
+      "position": {
+        "x": 10.000000000000002,
+        "y": 10,
+      },
       "set": [Function],
       "setAngle": [Function],
       "x": 10.000000000000002,
@@ -15,6 +19,10 @@ exports[`calculateNextState can calculate next state 1`] = `
     "position": {
       "angle": 45,
       "mag": 438.4062043356595,
+      "position": {
+        "x": 310,
+        "y": 310,
+      },
       "set": [Function],
       "setAngle": [Function],
       "x": 310,
@@ -23,18 +31,14 @@ exports[`calculateNextState can calculate next state 1`] = `
   },
   "bars": {
     "1": {
-      "command": {
-        "upDown": "up",
-      },
+      "command": "up",
       "position": {
         "x": 20,
         "y": 290,
       },
     },
     "2": {
-      "command": {
-        "upDown": "up",
-      },
+      "command": "up",
       "position": {
         "x": 580,
         "y": 290,
@@ -52,6 +56,10 @@ exports[`calculateNextState can recursively calculate current state from old net
     "movement": {
       "angle": 44.99999999999999,
       "mag": 14.142135623730953,
+      "position": {
+        "x": 10.000000000000004,
+        "y": 10,
+      },
       "set": [Function],
       "setAngle": [Function],
       "x": 10.000000000000004,
@@ -60,6 +68,10 @@ exports[`calculateNextState can recursively calculate current state from old net
     "position": {
       "angle": 45,
       "mag": 452.54833995939043,
+      "position": {
+        "x": 320,
+        "y": 320,
+      },
       "set": [Function],
       "setAngle": [Function],
       "x": 320,
@@ -68,18 +80,14 @@ exports[`calculateNextState can recursively calculate current state from old net
   },
   "bars": {
     "1": {
-      "command": {
-        "upDown": "up",
-      },
+      "command": "up",
       "position": {
         "x": 20,
         "y": 280,
       },
     },
     "2": {
-      "command": {
-        "upDown": "up",
-      },
+      "command": "up",
       "position": {
         "x": 580,
         "y": 280,

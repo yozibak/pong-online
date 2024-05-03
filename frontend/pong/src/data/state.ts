@@ -17,18 +17,14 @@ const InitialState: PongState = {
         x: LeftThreshold,
         y: DefaultHeight / 2 - BarLength / 2,
       },
-      command: {
-        upDown: null,
-      },
+      command: null,
     },
     2: {
       position: {
         x: RightThreshold,
         y: DefaultHeight / 2 - BarLength / 2,
       },
-      command: {
-        upDown: null,
-      },
+      command: null,
     },
   },
   ball: initBall(),
