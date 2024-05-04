@@ -1,4 +1,4 @@
-export const FPS = 48
+export const FPS = 12
 export const BarWidth = 10
 export const BarOffset = 20
 export const BarLength = 100

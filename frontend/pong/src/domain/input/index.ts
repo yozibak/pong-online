@@ -24,3 +24,6 @@ export const makeInputBuffer = (playerNumber: PlayerNumber = 1) => {
     }
   }
 }
+
+type InputBuffer = ReturnType<typeof makeInputBuffer>
+export type LatestInputs = InputBuffer['latestInputs']

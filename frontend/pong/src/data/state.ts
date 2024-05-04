@@ -40,6 +40,7 @@ const InitialState: PongState = {
     2: 0,
   },
   hasGameset: false,
+  frameCount: 0,
 }
 
 const reducers = {
