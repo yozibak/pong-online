@@ -13,7 +13,7 @@ export type Bar = {
   command: PlayerCommand
 }
 
-export type PlayerCommand = UpDown | null
+export type PlayerCommand = 'up' | 'down' | 'still'
 
 export type Ball = {
   position: PongVector
@@ -32,7 +32,5 @@ export type PongVector = Position & {
 }
 
 export type Position = { x: number; y: number }
-
-export type UpDown = 'up' | 'down'
 
 export type PlayerNumber = 1 | 2

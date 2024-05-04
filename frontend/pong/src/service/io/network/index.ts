@@ -1,8 +1,8 @@
 import type { GraphQLSubscription } from 'aws-amplify/api'
 import { client } from './client'
-import { PlayerNumber } from '../../data/types'
+import { PlayerNumber } from '../../../data/types'
 import { sendData, subscribeGame } from './queries'
-import { NetworkPayload } from '../../domain/network'
+import { NetworkPayload } from '../../../domain/output'
 
 export const startSubscription = (
   gameID: string,

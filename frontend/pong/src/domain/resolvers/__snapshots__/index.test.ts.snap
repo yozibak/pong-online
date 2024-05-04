@@ -34,14 +34,14 @@ exports[`calculateNextState can calculate next state 1`] = `
       "command": "up",
       "position": {
         "x": 20,
-        "y": 290,
+        "y": 280,
       },
     },
     "2": {
       "command": "up",
       "position": {
         "x": 580,
-        "y": 290,
+        "y": 280,
       },
     },
   },
@@ -83,14 +83,14 @@ exports[`calculateNextState can recursively calculate current state from old net
       "command": "up",
       "position": {
         "x": 20,
-        "y": 280,
+        "y": 260,
       },
     },
     "2": {
       "command": "up",
       "position": {
         "x": 580,
-        "y": 280,
+        "y": 260,
       },
     },
   },

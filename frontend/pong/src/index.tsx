@@ -1,7 +1,7 @@
 import pjson from '../package.json'
 import { AspectRatio, DefaultHeight, DefaultWidth, FPS } from './config'
 import { makeP5Canvas } from './p5canvas'
-import { resolveFrame, setupServices } from './service'
+import { resolveFrame, initialSetup } from './service'
 import { CanvasSize } from './types'
 
 const setup =
@@ -15,7 +15,7 @@ const setup =
     canvas.style.width = `${width / AspectRatio}px`
     canvas.style.height = `${height}px`
 
-    setupServices()
+    initialSetup()
   }
 
 const VERSION = pjson.version

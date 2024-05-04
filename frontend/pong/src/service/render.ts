@@ -11,13 +11,13 @@ import { RenderingState } from '../domain'
 
 export const renderState = (state: RenderingState) => {
   p.background(0)
-  p.fill(255)
+  p.fill(200)
   p.noStroke()
 
-  rendewrEdge()
+  renderBall(state.ball)
   renderBar(state.bars[1], 1)
   renderBar(state.bars[2], 2)
-  renderBall(state.ball)
+  rendewrEdge()
   renderScore(state.score)
   renderBorder()
 }

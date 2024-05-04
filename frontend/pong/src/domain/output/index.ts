@@ -16,7 +16,7 @@ export type NetworkPayload = {
   frameCount: number
 }
 
-const getNetworkPayload = (): NetworkPayload => {
+export const getNetworkPayload = (): NetworkPayload => {
   const playerNumber = store.current.playerNumber
   const frameCount = p.frameCount
   return {

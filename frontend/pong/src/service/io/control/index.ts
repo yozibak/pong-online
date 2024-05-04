@@ -1,23 +1,19 @@
-import { buffer1, buffer2 } from '../../domain/commands'
+import { inputBuffer } from '../../../domain'
 
 export const detectControl = () => {
-  detectKeys()
-}
-
-const detectKeys = () => {
   if (isKeyDown('w')) {
-    buffer1.update('up')
+    inputBuffer.pushLocalInput('up', 1)
   } else if (isKeyDown('s')) {
-    buffer1.update('down')
+    inputBuffer.pushLocalInput('down', 1)
   } else {
-    buffer1.update(null)
+    inputBuffer.pushLocalInput('still', 1)
   }
   if (isKeyDown('o')) {
-    buffer2.update('up')
+    inputBuffer.pushLocalInput('up', 2)
   } else if (isKeyDown('k')) {
-    buffer2.update('down')
+    inputBuffer.pushLocalInput('down', 2)
   } else {
-    buffer2.update(null)
+    inputBuffer.pushLocalInput('still', 2)
   }
 }
 

@@ -1,4 +1,11 @@
-import { BallSize, BarLength, DefaultHeight, DefaultWidth, LeftThreshold, RightThreshold } from '../config'
+import {
+  BallVelocity,
+  BarLength,
+  DefaultHeight,
+  DefaultWidth,
+  LeftThreshold,
+  RightThreshold,
+} from '../config'
 import { StateSnapshot } from '../domain/resolvers'
 import { ReducerMap, makeStore } from './helpers/store'
 import { createVector } from './primitives'
@@ -6,7 +13,7 @@ import { Ball, PlayerCommand, PlayerNumber, PongState } from './types'
 
 export const initBall = (): Ball => ({
   position: createVector({ x: DefaultWidth / 2, y: DefaultHeight / 2 }),
-  movement: createVector({ x: -BallSize / 2, y: -BallSize / 2 }),
+  movement: createVector({ x: -BallVelocity, y: -BallVelocity }),
 })
 
 const InitialState: PongState = {
@@ -17,14 +24,14 @@ const InitialState: PongState = {
         x: LeftThreshold,
         y: DefaultHeight / 2 - BarLength / 2,
       },
-      command: null,
+      command: 'still',
     },
     2: {
       position: {
         x: RightThreshold,
         y: DefaultHeight / 2 - BarLength / 2,
       },
-      command: null,
+      command: 'still',
     },
   },
   ball: initBall(),

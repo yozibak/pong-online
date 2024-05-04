@@ -1,10 +1,15 @@
 import { store } from '../data'
 import { PlayerNumber } from '../data/types'
-import { buffer1, buffer2 } from './commands'
 import { calculateNextState } from './resolvers'
 import { isBallOut } from './resolvers/hit'
 import { getBarSide } from './resolvers/helpers/position'
 import { checkWinner } from './resolvers/score'
+import { inputBuffer } from '.'
+
+export const gamestartEvent = (pn: PlayerNumber) => {
+  inputBuffer.playerNumber = pn
+  store.setPlayer(pn)
+}
 
 export const frameEvent = () => {
   if (store.current.hasGameset) return
@@ -21,9 +26,13 @@ export const frameEvent = () => {
 }
 
 const importInput = () => {
-  store.updateCommand(buffer1.command, buffer1.playerNumber)
-  store.updateCommand(buffer2.command, buffer2.playerNumber)
+  const current = inputBuffer.latestInputs
+  store.updateCommand(current.localInput[1], 1)
+  store.updateCommand(current.localInput[2], 2)
 
+  if (current.networkPayload) {
+    console.log(current.networkPayload)
+  }
   // import network input here //
 }
 
