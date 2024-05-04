@@ -3,7 +3,7 @@ import { Destination, resolveBallDestination } from './ball'
 import { resolvePlayerBars } from './bar'
 import { resolveBarHit } from './hit'
 
-export type StateSnapshot = Pick<PongState, 'ball' | 'bars'> & {
+export type StateSnapshot = Pick<PongState, 'ball' | 'bars' | 'score'> & {
   frameAgo?: number
 }
 
@@ -14,6 +14,7 @@ export const calculateNextState = (snapshot: StateSnapshot): StateSnapshot => {
   const nextSnapshot: StateSnapshot = {
     ball: updateBall(snapshot.ball, finalDest),
     bars: nextBars,
+    score: snapshot.score,
     frameAgo: snapshot.frameAgo,
   }
   if (nextSnapshot.frameAgo) {

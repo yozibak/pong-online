@@ -35,10 +35,7 @@ const InitialState: PongState = {
       command: 'still',
     },
   },
-  ball: {
-    position: createVector({ x: DefaultWidth / 2, y: DefaultHeight / 2 }),
-    movement: createVector({ x: 0, y: 0 }),
-  },
+  ball: initBall(),
   score: {
     1: 0,
     2: 0,
@@ -70,6 +67,7 @@ const reducers = {
   updateBySnapshot: (s) => (snapshot: StateSnapshot) => {
     s.ball = snapshot.ball
     s.bars = snapshot.bars
+    s.score = snapshot.score
   },
   setStartTime: (s) => (startTime?: number) => {
     s.startTime = startTime || Date.now() + 5_000

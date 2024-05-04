@@ -1,6 +1,18 @@
 import { inputBuffer } from '../../../domain'
 
+const isMobile = () => {
+  return window.innerWidth < 768
+}
+
 export const detectControl = () => {
+  if (isMobile()) {
+    detectTouch()
+    return
+  }
+  detectKey()
+}
+
+const detectKey = () => {
   if (isKeyDown('w')) {
     inputBuffer.pushLocalInput('up', 1)
   } else if (isKeyDown('s')) {
@@ -14,6 +26,16 @@ export const detectControl = () => {
     inputBuffer.pushLocalInput('down', 2)
   } else {
     inputBuffer.pushLocalInput('still', 2)
+  }
+}
+
+const detectTouch = () => {
+  if (p.mouseX > (window.innerWidth * 2) / 3) {
+    inputBuffer.pushLocalInput('up')
+  } else if (p.mouseX < window.innerWidth / 3) {
+    inputBuffer.pushLocalInput('down')
+  } else {
+    inputBuffer.pushLocalInput('still')
   }
 }
 

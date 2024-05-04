@@ -22,7 +22,7 @@ export const getReceiverState = (
   networkPayload: NetworkPayload | null
 ): StateSnapshot => {
   if (!networkPayload) return local
-  const receiverSide = whichSideIsBallOn(local.ball.position)
+  const receiverSide = whichSideIsBallOn(local.playerNumber, local.ball.position)
   if (receiverSide === local.playerNumber)
     return local // TODO: should use opponent's bar
   else
@@ -56,6 +56,10 @@ const convertPayload = (payload: NetworkPayload): StateSnapshot => {
       1: payload.bar,
       2: payload.bar,
     },
+    score: {
+      1: payload.score.one,
+      2: payload.score.two,
+    }
   }
 }
 

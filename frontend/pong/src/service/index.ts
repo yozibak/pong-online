@@ -22,7 +22,7 @@ export const resolveFrame = () => {
   const renderingState = getRenderingState()
   renderState(renderingState)
 
-  if (!renderingState.hasGameset) {
+  if (renderingState.gameStatus !== 'gameset') {
     sendDataToServer(getNetworkPayload())
   } else {
     network.stop()

@@ -14,6 +14,10 @@ export type NetworkPayload = {
     command: PlayerCommand
   }
   frameCount: number
+  score: {
+    one: number
+    two: number
+  }
 }
 
 export const getNetworkPayload = (): NetworkPayload => {
@@ -30,5 +34,9 @@ export const getNetworkPayload = (): NetworkPayload => {
       command: store.current.bars[playerNumber].command,
     },
     frameCount: store.current.frameCount,
+    score: {
+      one: store.current.score[1],
+      two: store.current.score[2],
+    }
   }
 }

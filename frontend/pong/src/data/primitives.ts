@@ -26,16 +26,15 @@ export const createVector = ({ x, y }: Position = { x: 0, y: 0 }): PongVector =>
     get position(): Position {
       return {
         x: vector.x,
-        y: vector.y
+        y: vector.y,
       }
-    }
+    },
   }
 }
 
-export const createVectorFromAngle = (angle: number, mag: number):PongVector => {
+export const createVectorFromAngle = (angle: number, mag: number): PongVector => {
   return createVector(p5.Vector.fromAngle(toRadians(angle), mag))
 }
-
 
 export const sumPosition = (...positions: Position[]) => {
   return positions.reduce((a, b) => ({ x: a.x + b.x, y: a.y + b.y }))

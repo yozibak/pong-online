@@ -21,6 +21,9 @@ export const makeInputBuffer = (playerNumber: PlayerNumber = 1) => {
     },
     set playerNumber(pn: PlayerNumber) {
       playerNumber = pn
+    },
+    get playerNumber() {
+      return playerNumber
     }
   }
 }

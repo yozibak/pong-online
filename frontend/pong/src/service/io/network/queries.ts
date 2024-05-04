@@ -5,6 +5,7 @@ export const sendData = /* GraphQL */ `
     $frameCount: Int!
     $gameID: String!
     $playerNumber: Int!
+    $score: ScoreInput!
   ) {
     sendData(
       bar: $bar
@@ -12,6 +13,7 @@ export const sendData = /* GraphQL */ `
       gameID: $gameID
       playerNumber: $playerNumber
       ball: $ball
+      score: $score
     ) {
       ball {
         missed
@@ -30,6 +32,10 @@ export const sendData = /* GraphQL */ `
           x
           y
         }
+      }
+      score {
+        one
+        two
       }
       frameCount
       gameID
@@ -58,6 +64,10 @@ export const subscribeGame = /* GraphQL */ `
           x
           y
         }
+      }
+      score {
+        one
+        two
       }
       gameID
       playerNumber
