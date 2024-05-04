@@ -1,11 +1,14 @@
 export type PongState = {
+  gameStatus: GameStatus
   playerNumber: PlayerNumber
   bars: PlayerBars
   ball: Ball
   score: Score
-  hasGameset: boolean
   frameCount: number
+  startTime: number
 }
+
+export type GameStatus = 'ready' | 'started' | 'gameset'
 
 export type PlayerBars = Record<PlayerNumber, Bar>
 

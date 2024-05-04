@@ -5,20 +5,28 @@ import {
   DefaultHeight,
   DefaultWidth,
   EdgeThickness,
-} from '../config'
-import { PlayerNumber, Position, Score } from '../data/types'
-import { RenderingState } from '../domain'
+} from '../../../config'
+import { PlayerNumber, Position, Score } from '../../../data/types'
+import { RenderingState } from '../../../domain'
 
 export const renderState = (state: RenderingState) => {
   p.background(0)
   p.fill(200)
   p.noStroke()
 
-  renderBall(state.ball)
+  if (state.gameStatus === 'ready') {
+    renderSecondsToStart(state.secondsToStart)
+  }
+  if (state.gameStatus === 'started') {
+    renderBall(state.ball)
+    renderScore(state.score)
+  }
+  if (state.gameStatus === 'gameset') {
+    renderScore(state.score)
+  }
   renderBar(state.bars[1], 1)
   renderBar(state.bars[2], 2)
   rendewrEdge()
-  renderScore(state.score)
   renderBorder()
 }
 
@@ -45,4 +53,10 @@ const renderScore = (score: Score) => {
 
 const renderBorder = () => {
   p.rect(DefaultWidth / 2, 0, 2, DefaultHeight)
+}
+
+const SecondSize = 100
+const renderSecondsToStart = (secs: number) => {
+  p.textSize(SecondSize)
+  p.text(secs, DefaultWidth / 2 - SecondSize, DefaultHeight / 2 - SecondSize)
 }

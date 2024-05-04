@@ -1,5 +1,5 @@
 import { store } from '../data'
-import { PlayerNumber, Position, Score } from '../data/types'
+import { GameStatus, PlayerNumber, Position, Score } from '../data/types'
 import { makeInputBuffer } from './input'
 
 export const inputBuffer = makeInputBuffer()
@@ -8,7 +8,8 @@ export type RenderingState = {
   bars: Record<PlayerNumber, Position>
   ball: Position
   score: Score
-  hasGameset: boolean
+  gameStatus: GameStatus,
+  secondsToStart: number
 }
 
 export const getRenderingState = (): RenderingState => ({
@@ -18,5 +19,6 @@ export const getRenderingState = (): RenderingState => ({
   },
   ball: store.current.ball.position,
   score: store.current.score,
-  hasGameset: store.current.hasGameset,
+  gameStatus: store.current.gameStatus,
+  secondsToStart: Math.floor((store.current.startTime - Date.now()) / 1000)
 })

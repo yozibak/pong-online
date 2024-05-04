@@ -8,15 +8,16 @@ import {
 } from '../config'
 import { StateSnapshot } from '../domain/resolvers'
 import { ReducerMap, makeStore } from './helpers/store'
-import { createVector } from './primitives'
+import { createVector, createVectorFromAngle } from './primitives'
 import { Ball, PlayerCommand, PlayerNumber, PongState } from './types'
 
 export const initBall = (): Ball => ({
   position: createVector({ x: DefaultWidth / 2, y: DefaultHeight / 2 }),
-  movement: createVector({ x: -BallVelocity, y: -BallVelocity }),
+  movement: createVectorFromAngle(135, BallVelocity),
 })
 
 const InitialState: PongState = {
+  gameStatus: 'ready',
   playerNumber: 1,
   bars: {
     1: {
@@ -34,13 +35,16 @@ const InitialState: PongState = {
       command: 'still',
     },
   },
-  ball: initBall(),
+  ball: {
+    position: createVector({ x: DefaultWidth / 2, y: DefaultHeight / 2 }),
+    movement: createVector({ x: 0, y: 0 }),
+  },
   score: {
     1: 0,
     2: 0,
   },
-  hasGameset: false,
   frameCount: 0,
+  startTime: 0,
 }
 
 const reducers = {
@@ -61,11 +65,21 @@ const reducers = {
     s.ball = initBall()
   },
   gameset: (s) => () => {
-    s.hasGameset = true
+    s.gameStatus = 'gameset'
   },
   updateBySnapshot: (s) => (snapshot: StateSnapshot) => {
     s.ball = snapshot.ball
     s.bars = snapshot.bars
+  },
+  setStartTime: (s) => (startTime?: number) => {
+    s.startTime = startTime || Date.now() + 5_000
+  },
+  gameStart: (s) => () => {
+    s.gameStatus = 'started'
+    s.ball = initBall()
+  },
+  incrementFrameCount: (s) => () => {
+    s.frameCount++
   },
 } satisfies ReducerMap<PongState>
 

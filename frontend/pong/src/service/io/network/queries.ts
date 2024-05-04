@@ -65,3 +65,23 @@ export const subscribeGame = /* GraphQL */ `
     }
   }
 `
+
+export const sendHandShake = /* GraphQL */ `
+  mutation MyMutation($body: String!, $gameID: String!, $playerNumber: Int!) {
+    sendHandShake(body: $body, gameID: $gameID, playerNumber: $playerNumber) {
+      body
+      gameID
+      playerNumber
+    }
+  }
+`
+
+export const subscribeHandShake = /* GraphQL */ `
+  subscription MySubscription($gameID: String!, $playerNumber: Int!) {
+    subscribeHandShake(gameID: $gameID, playerNumber: $playerNumber) {
+      body
+      gameID
+      playerNumber
+    }
+  }
+`

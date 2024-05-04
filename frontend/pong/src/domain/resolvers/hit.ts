@@ -1,4 +1,4 @@
-import { BarLength, DefaultWidth } from '../../config'
+import { BarLength } from '../../config'
 import { createVectorFromAngle, sumPosition } from '../../data'
 import { Ball, PlayerBars, Position } from '../../data/types'
 import { Destination } from './ball'
@@ -70,9 +70,4 @@ const getHitAngle = (abs: number) => {
 const decideFinalAngle = (angle: number, edge: EdgePosition) => {
   if (edge === 'right') return 180 - angle
   return angle
-}
-
-export const isBallOut = (ball: Ball) => {
-  if (!ball.missed) return false
-  return ball.position.x <= 0 || ball.position.x >= DefaultWidth
 }

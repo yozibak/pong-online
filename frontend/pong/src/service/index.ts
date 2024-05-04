@@ -6,7 +6,7 @@ import { getNetworkPayload } from '../domain/output'
 import { detectControl } from './io/control'
 import { sendDataToServer } from './io/network'
 import { makeNetwork } from './io/network/buffer'
-import { renderState } from './render'
+import { renderState } from './render/game/render'
 
 const network = makeNetwork()
 

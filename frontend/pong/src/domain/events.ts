@@ -4,8 +4,12 @@ import { PlayerNumber } from '../data/types'
 import { combineState } from './input/combine'
 import { calculateNextState } from './resolvers'
 import { getBarSide } from './resolvers/helpers/position'
-import { isBallOut } from './resolvers/hit'
-import { checkWinner } from './resolvers/score'
+import { checkWinner, isBallOut } from './resolvers/score'
+
+export const onlineMatchEvent = (startTime?: number) => {
+  store.setStartTime(startTime)
+  return store.current.startTime
+}
 
 export const gamestartEvent = (pn: PlayerNumber) => {
   inputBuffer.playerNumber = pn
@@ -13,14 +17,34 @@ export const gamestartEvent = (pn: PlayerNumber) => {
 }
 
 export const frameEvent = () => {
-  if (store.current.hasGameset) return
-  const snapshot = combineState(inputBuffer.latestInputs, store.current)
-  const nextSnapshot = calculateNextState(snapshot)
-  store.updateBySnapshot(nextSnapshot)
+  if (store.current.gameStatus === 'ready') {
+    waitingEvent()
+  } else if (store.current.gameStatus === 'started') {
+    gameEvent()
+  }
+}
+
+const waitingEvent = () => {
+  const now = Date.now()
+  if (now > store.current.startTime) {
+    store.gameStart()
+  }
+  resolveState() // only bars
+}
+
+const gameEvent = () => {
+  store.incrementFrameCount()
+  resolveState()
 
   if (isBallOut(store.current.ball)) {
     pointEvent()
   }
+}
+
+const resolveState = () => {
+  const snapshot = combineState(inputBuffer.latestInputs, store.current)
+  const nextSnapshot = calculateNextState(snapshot)
+  store.updateBySnapshot(nextSnapshot)
 }
 
 const pointEvent = () => {

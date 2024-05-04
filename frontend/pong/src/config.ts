@@ -1,6 +1,6 @@
-export const FPS = 12
+export const FPS = 24
 export const BarWidth = 10
-export const BarOffset = 20
+export const BarOffset = 40
 export const BarLength = 100
 export const BarVelocity = 20
 export const EdgeThickness = 10

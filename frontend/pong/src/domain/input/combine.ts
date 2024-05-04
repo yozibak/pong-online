@@ -23,7 +23,8 @@ export const getReceiverState = (
 ): StateSnapshot => {
   if (!networkPayload) return local
   const receiverSide = whichSideIsBallOn(local.ball.position)
-  if (receiverSide === local.playerNumber) return local
+  if (receiverSide === local.playerNumber)
+    return local // TODO: should use opponent's bar
   else
     return combineNetworkWithLocal(networkPayload, local.frameCount, local.bars[local.playerNumber])
 }
