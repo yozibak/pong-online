@@ -16,7 +16,7 @@ api_key=$(
         --output text
     )
 
-cd frontend/app
+cd frontend/pong
 pnpm i
 rm .env && touch .env
 echo "VITE_API_ENDPOINT=$api_endpoint" >> .env

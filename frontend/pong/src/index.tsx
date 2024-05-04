@@ -15,13 +15,20 @@ const setup =
     p.createCanvas(DefaultWidth, DefaultHeight)
     p.frameRate(FPS)
 
-    // resize
-    const canvas = document.getElementsByTagName('canvas')[0]
-    canvas.style.width = `${width / AspectRatio}px`
-    canvas.style.height = `${height}px`
-
+    resizeCanvas(width, height)
     initialSetup()
   }
+
+const resizeCanvas = (width: number, height: number) => {
+  const canvas = document.getElementsByTagName('canvas')[0]
+  if (width > height) {
+    canvas.style.width = `${width / AspectRatio}px`
+    canvas.style.height = `${height}px`
+  } else {
+    canvas.style.width = `${width}px`
+    canvas.style.height = `${height / AspectRatio}px`
+  }
+}
 
 const Pong = makeP5Canvas({
   setup,

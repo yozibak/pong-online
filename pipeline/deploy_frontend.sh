@@ -16,7 +16,7 @@ s3_bucket_name=$(
         --output text
     )
 
-cd frontend/app
+cd frontend/pong
 aws s3 sync dist s3://$s3_bucket_name/
 echo "--upload complete--"
 
