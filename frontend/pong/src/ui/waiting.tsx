@@ -1,7 +1,8 @@
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { HandShakeData, sendHandShakeData, startHandShakeSubscription } from '../service/io/network'
 import { GameID } from '../config'
 import { onlineMatchEvent } from '../domain/events'
+import qrcode from 'qrcode'
 
 const genInvitationLink = () => `${window.location.origin}/?player=2`
 
@@ -62,8 +63,20 @@ export const Invitation = ({ invitationLink }: { invitationLink: string }) => {
       onClick={() => copyToClipboard(invitationLink)}
       style={{ fontSize: '0.88rem', fontStyle: 'italic' }}
     >
-      <span style={{ cursor: 'pointer' }}>🔗 INVITATION LINK: {invitationLink}</span>
+      <div style={{ cursor: 'pointer' }}>🔗 INVITATION LINK: {invitationLink}</div>
+      <QRCode link={invitationLink} />
     </div>
+  )
+}
+
+const QRCode = ({link}: {link: string}) => {
+  const ref = useRef<HTMLCanvasElement>(null)
+  useEffect(() => {
+    if (!ref.current) return
+    qrcode.toCanvas(ref.current, link)
+  }, [ref, link])
+  return (
+    <canvas ref={ref}></canvas>
   )
 }
 
