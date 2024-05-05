@@ -21,7 +21,7 @@ export const calculateNextState = (snapshot: StateSnapshot): StateSnapshot => {
     if (nextSnapshot.frameAgo > 1) {
       nextSnapshot.frameAgo--
       return calculateNextState(nextSnapshot)
-    } 
+    }
     nextSnapshot.frameAgo = undefined
   }
   return nextSnapshot

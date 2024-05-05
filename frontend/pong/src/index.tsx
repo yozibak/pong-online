@@ -5,7 +5,7 @@ import { makeP5Canvas } from './p5canvas'
 import { initialSetup, resolveFrame } from './service'
 import { CanvasSize } from './types'
 import { Container } from './ui/container'
-import { Interface } from './ui/interface'
+import { Welcome } from './ui/welcome'
 
 const VERSION = pjson.version
 
@@ -42,7 +42,7 @@ const PongGame: React.FC<{ size: CanvasSize }> = ({ size }) => {
       {ready ? (
         <Pong size={size} />
       ) : (
-        <Interface version={VERSION} getReady={() => setReady(true)} />
+        <Welcome version={VERSION} getReady={() => setReady(true)} />
       )}
     </Container>
   )

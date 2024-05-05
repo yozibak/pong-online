@@ -28,6 +28,10 @@ describe(`${calculateNextState.name}`, () => {
         1: bar1,
         2: bar2,
       },
+      score: {
+        1: 0,
+        2: 0,
+      },
     }
   }
   it(`can calculate next state`, () => {

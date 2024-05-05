@@ -1,13 +1,15 @@
+import qrcode from 'qrcode'
 import { useEffect, useRef } from 'react'
-import { HandShakeData, sendHandShakeData, startHandShakeSubscription } from '../service/io/network'
 import { GameID } from '../config'
 import { onlineMatchEvent } from '../domain/events'
-import qrcode from 'qrcode'
+import { HandShakeData, sendHandShakeData, startHandShakeSubscription } from '../service/io/network'
 
 const genInvitationLink = () => `${window.location.origin}/?player=2`
 
+const Player2Joined = 'Player2Joined'
+
 const onHandShake = async (d: HandShakeData) => {
-  if (d.body === 'Player2Joined') {
+  if (d.body === Player2Joined) {
     // player 1
     const startTime = onlineMatchEvent()
     await sendHandShakeData({
@@ -42,7 +44,7 @@ export const Waiting: React.FC<{ isGuest: boolean; getReady: () => void }> = ({
       sendHandShakeData({
         gameID: GameID,
         playerNumber: 2,
-        body: 'Player2Joined',
+        body: Player2Joined,
       })
     }
     return () => {
@@ -69,15 +71,13 @@ export const Invitation = ({ invitationLink }: { invitationLink: string }) => {
   )
 }
 
-const QRCode = ({link}: {link: string}) => {
+const QRCode = ({ link }: { link: string }) => {
   const ref = useRef<HTMLCanvasElement>(null)
   useEffect(() => {
     if (!ref.current) return
     qrcode.toCanvas(ref.current, link)
   }, [ref, link])
-  return (
-    <canvas ref={ref}></canvas>
-  )
+  return <canvas ref={ref}></canvas>
 }
 
 const copyToClipboard = async (link: string) => {

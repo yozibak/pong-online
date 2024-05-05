@@ -23,6 +23,10 @@ test(`${combineNetworkWithLocal.name}`, () => {
       },
       command: 'up',
     },
+    score: {
+      one: 0,
+      two: 0,
+    },
     frameCount: 398,
   }
   const localPlayerBar: Bar = {

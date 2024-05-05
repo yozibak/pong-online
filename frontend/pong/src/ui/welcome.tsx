@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Waiting } from './waiting'
 
 type PlayMode = 'online-multi'
@@ -9,23 +9,20 @@ export const isOnlineGuest = (): boolean => {
   return number === 2
 }
 
-export const Interface: React.FC<{ version: string; getReady: () => void }> = ({
+export const Welcome: React.FC<{ version: string; getReady: () => void }> = ({
   version,
   getReady,
 }) => {
   const [mode, setMode] = useState<PlayMode>()
-  useEffect(() => {
-    if (isOnlineGuest()) {
-      setMode('online-multi')
-    }
-  }, [window])
+  const isGuest = isOnlineGuest()
 
   if (!mode)
     return (
       <div style={style}>
         <h1>PONG</h1>
         <div>version: {version}</div>
-        <button onClick={() => setMode('online-multi')}>Multi Player (Online)</button>
+        <div>Welcome! You are {isGuest ? `Player2` : `Player1`}</div>
+        <button onClick={() => setMode('online-multi')}>🏓 {isGuest ? `Join` : `Play`} 🏓</button>
       </div>
     )
   return <Waiting isGuest={isOnlineGuest()} getReady={getReady} />
