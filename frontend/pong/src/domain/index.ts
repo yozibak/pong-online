@@ -1,6 +1,6 @@
 import { store } from '../data'
 import { GameStatus, PlayerNumber, Position, Score } from '../data/types'
-import { makeInputBuffer } from './input'
+import { makeInputBuffer } from './input/buffer'
 
 export const inputBuffer = makeInputBuffer()
 

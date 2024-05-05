@@ -1,4 +1,4 @@
-import { LatestInputs } from '.'
+import { LatestInputs } from './buffer'
 import { createVector } from '../../data'
 import { Bar, PlayerNumber, PongState } from '../../data/types'
 import { NetworkPayload } from '../output'

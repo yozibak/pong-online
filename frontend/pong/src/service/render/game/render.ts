@@ -55,8 +55,8 @@ const renderBorder = () => {
   p.rect(DefaultWidth / 2, 0, 2, DefaultHeight)
 }
 
-const SecondSize = 100
+const SecondSize = 40
 const renderSecondsToStart = (secs: number) => {
   p.textSize(SecondSize)
-  p.text(secs, DefaultWidth / 2 - SecondSize, DefaultHeight / 2 - SecondSize)
+  p.text(secs, DefaultWidth / 2 - SecondSize / 4, DefaultHeight / 2 - SecondSize / 2)
 }
