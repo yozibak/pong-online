@@ -1,7 +1,7 @@
 export const FPS = 30
 export const BarWidth = 5
 export const BarOffset = 20
-export const BarLength = 30
+export const BarLength = 50
 export const BarVelocity = 10
 export const EdgeThickness = 5
 export const BallSize = 5

@@ -6,6 +6,7 @@ import { initialSetup, resolveFrame } from './service'
 import { CanvasSize } from './types'
 import { Container } from './ui/container'
 import { Welcome } from './ui/welcome'
+import { Control } from './ui/control'
 
 const VERSION = pjson.version
 
@@ -40,7 +41,10 @@ const PongGame: React.FC<{ size: CanvasSize }> = ({ size }) => {
   return (
     <Container size={size}>
       {ready ? (
-        <Pong size={size} />
+        <>
+          <Pong size={size} />
+          <Control />
+        </>
       ) : (
         <Welcome version={VERSION} getReady={() => setReady(true)} />
       )}
