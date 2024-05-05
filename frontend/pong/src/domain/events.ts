@@ -42,7 +42,10 @@ const gameEvent = () => {
 }
 
 const resolveState = () => {
-  const snapshot = combineState(inputBuffer.latestInputs, store.current)
+  const snapshot = combineState(
+    inputBuffer.getLatestInputs(store.current.frameCount),
+    store.current
+  )
   const nextSnapshot = calculateNextState(snapshot)
   store.updateBySnapshot(nextSnapshot)
 }
