@@ -1,9 +1,10 @@
-import { LatestInputs } from './buffer'
 import { createVector } from '../../data'
 import { Bar, PlayerNumber, PongState } from '../../data/types'
 import { NetworkPayload } from '../output'
 import { StateSnapshot } from '../resolvers'
-import { whichSideIsBallOn } from './helpers'
+import { resolveBarPosition } from '../resolvers/bar'
+import { LatestInputs } from './buffer'
+import { opponentPlayerNumber, whichSideIsBallOn } from './helpers'
 
 export const combineState = (
   { localInput, networkPayload }: LatestInputs,
@@ -23,10 +24,24 @@ export const getReceiverState = (
 ): StateSnapshot => {
   if (!networkPayload) return local
   const receiverSide = whichSideIsBallOn(local.playerNumber, local.ball.position)
-  if (receiverSide === local.playerNumber)
-    return local // TODO: should use opponent's bar
+  if (receiverSide === local.playerNumber) return localStateWithOpponentsBar(local, networkPayload)
   else
     return combineNetworkWithLocal(networkPayload, local.frameCount, local.bars[local.playerNumber])
+}
+
+const localStateWithOpponentsBar = (local: PongState, payload: NetworkPayload): StateSnapshot => {
+  const frameAgo = local.frameCount - payload.frameCount
+  const opponentBar = resolveBar(payload.bar, frameAgo)
+  return {
+    ...local,
+    bars: { ...local.bars, [opponentPlayerNumber(local.playerNumber)]: opponentBar },
+  }
+}
+
+const resolveBar = (bar: Bar, frames: number): Bar => {
+  if (frames === 0) return bar
+  const resolved = resolveBarPosition(bar)
+  return resolveBar(resolved, frames - 1)
 }
 
 export const combineNetworkWithLocal = (
@@ -59,7 +74,7 @@ const convertPayload = (payload: NetworkPayload): StateSnapshot => {
     score: {
       1: payload.score.one,
       2: payload.score.two,
-    }
+    },
   }
 }
 

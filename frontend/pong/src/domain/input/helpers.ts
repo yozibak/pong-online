@@ -13,3 +13,5 @@ export const whichSideIsBallOn = (localPlayerNumber: PlayerNumber, ballPosition:
     else return 1
   }
 }
+
+export const opponentPlayerNumber = (playerNumber: PlayerNumber) => (playerNumber === 1 ? 2 : 1)

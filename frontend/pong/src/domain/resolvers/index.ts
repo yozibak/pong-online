@@ -18,6 +18,7 @@ export const calculateNextState = (snapshot: StateSnapshot): StateSnapshot => {
     frameAgo: snapshot.frameAgo,
   }
   if (nextSnapshot.frameAgo) {
+    console.log(nextSnapshot.frameAgo)
     if (nextSnapshot.frameAgo > 1) {
       nextSnapshot.frameAgo--
       return calculateNextState(nextSnapshot)
