@@ -13,20 +13,27 @@ export const detectControl = () => {
 }
 
 const detectKey = () => {
-  if (isKeyDown('w')) {
-    inputBuffer.pushLocalInput('up', 1)
-  } else if (isKeyDown('s')) {
-    inputBuffer.pushLocalInput('down', 1)
+  if (p.keyIsDown(p.UP_ARROW)) {
+    inputBuffer.pushLocalInput('up')
+  } else if (p.keyIsDown(p.DOWN_ARROW)) {
+    inputBuffer.pushLocalInput('down')
   } else {
-    inputBuffer.pushLocalInput('still', 1)
+    inputBuffer.pushLocalInput('still')
   }
-  if (isKeyDown('o')) {
-    inputBuffer.pushLocalInput('up', 2)
-  } else if (isKeyDown('k')) {
-    inputBuffer.pushLocalInput('down', 2)
-  } else {
-    inputBuffer.pushLocalInput('still', 2)
-  }
+  // if (isKeyDown('w')) {
+  //   inputBuffer.pushLocalInput('up', 1)
+  // } else if (isKeyDown('s')) {
+  //   inputBuffer.pushLocalInput('down', 1)
+  // } else {
+  //   inputBuffer.pushLocalInput('still', 1)
+  // }
+  // if (isKeyDown('o')) {
+  //   inputBuffer.pushLocalInput('up', 2)
+  // } else if (isKeyDown('k')) {
+  //   inputBuffer.pushLocalInput('down', 2)
+  // } else {
+  //   inputBuffer.pushLocalInput('still', 2)
+  // }
 }
 
 const detectTouch = () => {

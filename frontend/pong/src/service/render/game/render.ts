@@ -5,6 +5,7 @@ import {
   DefaultHeight,
   DefaultWidth,
   EdgeThickness,
+  ScoreToWin,
 } from '../../../config'
 import { PlayerNumber, Position, Score } from '../../../data/types'
 import { RenderingState } from '../../../domain'
@@ -22,7 +23,8 @@ export const renderState = (state: RenderingState) => {
     renderScore(state.score)
   }
   if (state.gameStatus === 'gameset') {
-    renderScore(state.score)
+    p.fill(100)
+    renderScore(state.score, true)
   }
   renderBar(state.bars[1], 1)
   renderBar(state.bars[2], 2)
@@ -45,10 +47,21 @@ const rendewrEdge = () => {
 
 const Offset = 40
 const ScoreFontSize = 40
-const renderScore = (score: Score) => {
+const renderScore = (score: Score, gameSet = false) => {
   p.textSize(ScoreFontSize)
+  p.push()
+  if (gameSet && score[1] === ScoreToWin) {
+    p.fill(200)
+  }
   p.text(score[1], DefaultWidth / 2 - Offset - ScoreFontSize, Offset)
+  p.pop()
+
+  p.push()
+  if (gameSet && score[2] === ScoreToWin) {
+    p.fill(200)
+  }
   p.text(score[2], DefaultWidth / 2 + Offset, Offset)
+  p.pop()
 }
 
 const renderBorder = () => {

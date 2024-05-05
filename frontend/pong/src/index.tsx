@@ -22,11 +22,11 @@ const setup =
 const resizeCanvas = (width: number, height: number) => {
   const canvas = document.getElementsByTagName('canvas')[0]
   if (width > height) {
-    canvas.style.width = `${width / AspectRatio}px`
+    canvas.style.width = `${height * AspectRatio}px`
     canvas.style.height = `${height}px`
   } else {
     canvas.style.width = `${width}px`
-    canvas.style.height = `${height / AspectRatio}px`
+    canvas.style.height = `${width / AspectRatio}px`
   }
 }
 

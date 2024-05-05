@@ -27,7 +27,6 @@ export const frameEvent = () => {
 const waitingEvent = () => {
   const now = Date.now()
   if (now > store.current.startTime) {
-    console.log('game start', new Date())
     store.gameStart()
   }
   resolveState() // only bars
