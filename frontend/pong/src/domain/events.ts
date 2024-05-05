@@ -1,7 +1,7 @@
 import { inputBuffer } from '.'
 import { store } from '../data'
 import { PlayerNumber } from '../data/types'
-import { combineState } from './input/combine'
+import { mergeInputsWithState } from './input/combine'
 import { calculateNextState } from './resolvers'
 import { getBarSide } from './resolvers/helpers/position'
 import { checkWinner, isBallOut } from './resolvers/score'
@@ -27,6 +27,7 @@ export const frameEvent = () => {
 const waitingEvent = () => {
   const now = Date.now()
   if (now > store.current.startTime) {
+    console.log('game start', new Date())
     store.gameStart()
   }
   resolveState() // only bars
@@ -42,7 +43,7 @@ const gameEvent = () => {
 }
 
 const resolveState = () => {
-  const snapshot = combineState(
+  const snapshot = mergeInputsWithState(
     inputBuffer.getLatestInputs(store.current.frameCount),
     store.current
   )

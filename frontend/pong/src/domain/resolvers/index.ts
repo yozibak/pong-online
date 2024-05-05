@@ -3,29 +3,33 @@ import { Destination, resolveBallDestination } from './ball'
 import { resolvePlayerBars } from './bar'
 import { resolveBarHit } from './hit'
 
-export type StateSnapshot = Pick<PongState, 'ball' | 'bars' | 'score'> & {
-  frameAgo?: number
+export type StateSnapshot = Pick<PongState, 'ball' | 'bars' | 'score' | 'playerNumber'> & {
+  receiving: boolean
+  calcFrames: number
 }
 
 export const calculateNextState = (snapshot: StateSnapshot): StateSnapshot => {
-  const nextBars = resolvePlayerBars(snapshot.bars)
-  const nextBallDestination = resolveBallDestination(snapshot.ball)
-  const finalDest = resolveBarHit(snapshot.ball, nextBallDestination, nextBars)
-  const nextSnapshot: StateSnapshot = {
-    ball: updateBall(snapshot.ball, finalDest),
-    bars: nextBars,
-    score: snapshot.score,
-    frameAgo: snapshot.frameAgo,
-  }
-  if (nextSnapshot.frameAgo) {
-    console.log(nextSnapshot.frameAgo)
-    if (nextSnapshot.frameAgo > 1) {
-      nextSnapshot.frameAgo--
-      return calculateNextState(nextSnapshot)
+  if (snapshot.calcFrames === 0) return snapshot
+  const nextBars = resolvePlayerBars(snapshot.bars, snapshot.calcFrames, snapshot.playerNumber)
+
+  if ((snapshot.receiving && snapshot.calcFrames === 1) || !snapshot.receiving) {
+    const nextBallDestination = resolveBallDestination(snapshot.ball)
+    const finalDest = resolveBarHit(snapshot.ball, nextBallDestination, nextBars)
+    const nextSnapshot: StateSnapshot = {
+      ...snapshot,
+      ball: updateBall(snapshot.ball, finalDest),
+      bars: nextBars,
+      calcFrames: snapshot.calcFrames - 1,
     }
-    nextSnapshot.frameAgo = undefined
+    return calculateNextState(nextSnapshot)
+  } else {
+    const nextSnapshot: StateSnapshot = {
+      ...snapshot,
+      bars: nextBars,
+      calcFrames: snapshot.calcFrames - 1,
+    }
+    return calculateNextState(nextSnapshot)
   }
-  return nextSnapshot
 }
 
 const updateBall = (ball: Ball, dest: Destination): Ball => {

@@ -1,11 +1,17 @@
 import { BarLength, BarVelocity, DefaultHeight } from '../../config'
-import { Bar, PlayerBars, PlayerCommand } from '../../data/types'
+import { Bar, PlayerBars, PlayerCommand, PlayerNumber } from '../../data/types'
+import { opponentPlayerNumber } from '../input/helpers'
 
-export const resolvePlayerBars = (bars: PlayerBars): PlayerBars => {
+export const resolvePlayerBars = (
+  bars: PlayerBars,
+  calcFrames: number,
+  playerNumber: PlayerNumber
+): PlayerBars => {
+  const op = opponentPlayerNumber(playerNumber)
   return {
-    1: resolveBarPosition(bars[1]),
-    2: resolveBarPosition(bars[2]),
-  }
+    [playerNumber]: calcFrames === 1 ? resolveBarPosition(bars[playerNumber]) : bars[playerNumber],
+    [op]: resolveBarPosition(bars[op]),
+  } as PlayerBars
 }
 
 export const resolveBarPosition = (bar: Bar, barVelocity = BarVelocity): Bar => {

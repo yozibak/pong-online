@@ -17,16 +17,16 @@ exports[`calculateNextState can calculate next state 1`] = `
       "y": 10,
     },
     "position": {
-      "angle": 45,
-      "mag": 438.4062043356595,
+      "angle": 34.11447294534126,
+      "mag": 374.4329045369811,
       "position": {
         "x": 310,
-        "y": 310,
+        "y": 210,
       },
       "set": [Function],
       "setAngle": [Function],
       "x": 310,
-      "y": 310,
+      "y": 210,
     },
   },
   "bars": {
@@ -34,18 +34,24 @@ exports[`calculateNextState can calculate next state 1`] = `
       "command": "up",
       "position": {
         "x": 20,
-        "y": 280,
+        "y": 90,
       },
     },
     "2": {
       "command": "up",
       "position": {
         "x": 580,
-        "y": 280,
+        "y": 90,
       },
     },
   },
-  "frameAgo": undefined,
+  "calcFrames": 0,
+  "playerNumber": 1,
+  "receiving": false,
+  "score": {
+    "1": 0,
+    "2": 0,
+  },
 }
 `;
 
@@ -66,16 +72,16 @@ exports[`calculateNextState can recursively calculate current state from old net
       "y": 10,
     },
     "position": {
-      "angle": 45,
-      "mag": 452.54833995939043,
+      "angle": 34.5085229876684,
+      "mag": 388.329756778952,
       "position": {
         "x": 320,
-        "y": 320,
+        "y": 220,
       },
       "set": [Function],
       "setAngle": [Function],
       "x": 320,
-      "y": 320,
+      "y": 220,
     },
   },
   "bars": {
@@ -83,17 +89,23 @@ exports[`calculateNextState can recursively calculate current state from old net
       "command": "up",
       "position": {
         "x": 20,
-        "y": 260,
+        "y": 90,
       },
     },
     "2": {
       "command": "up",
       "position": {
         "x": 580,
-        "y": 260,
+        "y": 80,
       },
     },
   },
-  "frameAgo": undefined,
+  "calcFrames": 0,
+  "playerNumber": 1,
+  "receiving": false,
+  "score": {
+    "1": 0,
+    "2": 0,
+  },
 }
 `;

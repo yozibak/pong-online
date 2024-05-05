@@ -1,73 +1,64 @@
 import { createVector } from '../../data'
-import { Bar, PlayerNumber, PongState } from '../../data/types'
+import { PlayerNumber, PongState } from '../../data/types'
 import { NetworkPayload } from '../output'
 import { StateSnapshot } from '../resolvers'
-import { resolveBarPosition } from '../resolvers/bar'
 import { LatestInputs } from './buffer'
-import { opponentPlayerNumber, whichSideIsBallOn } from './helpers'
+import { isPlayerReceiving } from './helpers'
 
-export const combineState = (
+export const mergeInputsWithState = (
   { localInput, networkPayload }: LatestInputs,
   localState: PongState
 ): StateSnapshot => {
-  const receiverState = getReceiverState(localState, networkPayload)
-  return applyLocalInput(receiverState, localInput, localState.playerNumber)
+  const receiverState = mergeState(localState, networkPayload)
+  const snapshot = applyLocalInput(receiverState, localInput, localState.playerNumber)
+  // console.log(snapshot.receiving, snapshot.ball.position.position, snapshot.ball.movement.position, snapshot.bars, snapshot.calcFrames)
+  return snapshot
 }
 
-/**
- * get ball receiver's state (the side on which the ball is)
- * to precisely determine bounce calculation
- */
-export const getReceiverState = (
+export const mergeState = (
   local: PongState,
   networkPayload: NetworkPayload | null
 ): StateSnapshot => {
-  if (!networkPayload) return local
-  const receiverSide = whichSideIsBallOn(local.playerNumber, local.ball.position)
-  if (receiverSide === local.playerNumber) return localStateWithOpponentsBar(local, networkPayload)
-  else
-    return combineNetworkWithLocal(networkPayload, local.frameCount, local.bars[local.playerNumber])
+  if (!networkPayload) return { ...local, receiving: true, calcFrames: 1 }
+  return _mergeState(local, networkPayload)
 }
 
-const localStateWithOpponentsBar = (local: PongState, payload: NetworkPayload): StateSnapshot => {
-  const frameAgo = local.frameCount - payload.frameCount
-  const opponentBar = resolveBar(payload.bar, frameAgo)
-  return {
-    ...local,
-    bars: { ...local.bars, [opponentPlayerNumber(local.playerNumber)]: opponentBar },
-  }
-}
-
-const resolveBar = (bar: Bar, frames: number): Bar => {
-  if (frames === 0) return bar
-  const resolved = resolveBarPosition(bar)
-  return resolveBar(resolved, frames - 1)
-}
-
-export const combineNetworkWithLocal = (
-  payload: NetworkPayload,
-  localFrameCount: number,
-  localPlayerBar: Bar
+export const _mergeState = (
+  local: Pick<PongState, 'ball' | 'bars' | 'playerNumber' | 'frameCount' | 'score'>,
+  networkPayload: NetworkPayload
 ): StateSnapshot => {
-  const networkState = convertPayload(payload)
-  const localPN = payload.playerNumber === 1 ? 2 : 1
+  const receiving = isPlayerReceiving(local.playerNumber, local.ball.position)
+  const networkState = convertPayload(networkPayload)
+  const localPN = local.playerNumber
+  const calcFrames = local.frameCount - networkPayload.frameCount
   return {
     ...networkState,
+    calcFrames,
+    receiving,
+    playerNumber: localPN,
     bars: {
       ...networkState.bars,
-      [localPN]: localPlayerBar,
+      [localPN]: local.bars[localPN],
     },
-    frameAgo: localFrameCount - payload.frameCount,
+    ...(receiving
+      ? {
+          ball: local.ball,
+          score: local.score,
+        }
+      : {}),
   }
 }
 
-const convertPayload = (payload: NetworkPayload): StateSnapshot => {
+const convertPayload = (
+  payload: NetworkPayload
+): Omit<StateSnapshot, 'receiving' | 'calcFrames' | 'playerNumber'> => {
   return {
     ball: {
       position: createVector(payload.ball.position),
       movement: createVector(payload.ball.movement),
     },
     bars: {
+      // either gets overridden
       1: payload.bar,
       2: payload.bar,
     },
