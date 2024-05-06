@@ -1,56 +1,30 @@
 import { inputBuffer } from '.'
 import { store } from '../data'
-import { PlayMode, PlayerNumber } from '../data/types'
+import { PlayerNumber } from '../data/types'
 import { mergeInputsWithState } from './input/combine'
-import { EventSignal, Signal } from './output'
 import { calculateNextState } from './resolvers'
-import { getBarSide } from './resolvers/helpers/position'
-import { checkWinner, isBallOut } from './resolvers/score'
+import { getBarSide } from './resolvers/hit'
+import { checkWinner, isBallOut } from './score'
 
-export const receiveGuestJoinAndDecideStartTime = (signal: Signal) => {
-  if (signal !== EventSignal.JOIN) return
-  store.setStartTime()
-}
-
-export const receiveGameStartTimeEvent = (signal: Signal) => {
-  const startTime = Number(signal)
-  if (Number.isNaN(startTime)) return
-  store.setStartTime(startTime)
-}
-
-export const selectOfflineMode = (mode: PlayMode) => {
-  store.setPlayMode(mode)
-  store.setStartTime()
-}
-
-export const initOnlineGame = (pn: PlayerNumber) => {
-  inputBuffer.playerNumber = pn
-  store.setPlayer(pn)
-  store.setPlayMode('online-multi')
-}
-
-export const frameEvent = () => {
+export const resolveStateAtFrame = () => {
   if (store.current.gameStatus === 'ready') {
-    waitingEvent()
+    readyCountEvent()
   } else if (store.current.gameStatus === 'started') {
     gameEvent()
-  } else if (store.current.gameStatus === 'gameset') {
-    // TODO: close the connection after a while
   }
 }
 
-const waitingEvent = () => {
+const readyCountEvent = () => {
   const now = Date.now()
   if (now > store.current.startTime) {
     store.gameStart()
   }
-  resolveState() // only bars
+  resolveState()
 }
 
 const gameEvent = () => {
   store.incrementFrameCount()
   resolveState()
-
   if (isBallOut(store.current.ball)) {
     pointEvent()
   }
@@ -68,6 +42,7 @@ const resolveState = () => {
 
 const pointEvent = () => {
   const side = getBarSide(store.current.ball.position)
+  if (!side) return
   const playerNumber: PlayerNumber = side === 'left' ? 2 : 1
   store.incrementScore(playerNumber)
 

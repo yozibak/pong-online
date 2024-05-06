@@ -9,7 +9,7 @@ export type PongState = {
   playMode?: PlayMode
 }
 
-export type GameStatus = 'ready' | 'started' | 'gameset'
+export type GameStatus = 'ready' | 'started' | 'gameset' | 'aborted'
 
 export type PlayerBars = Record<PlayerNumber, Bar>
 

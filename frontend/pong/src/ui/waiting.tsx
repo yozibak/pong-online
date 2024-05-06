@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
-import { receiveGuestJoinAndDecideStartTime, receiveGameStartTimeEvent } from '../domain/events'
+import { receiveGuestJoinAndDecideStartTime, receiveGameStartTimeEvent } from '../domain/match'
 import { EventSignal, getNetworkPayload } from '../domain/output'
 import { network } from '../service'
-import { sendDataToServer } from '../service/io/network'
+import { sendDataToServer } from '../service/network'
 import { Invitation } from './invitation'
 
 export const Waiting: React.FC<{ isGuest: boolean; getReady: () => void }> = ({

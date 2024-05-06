@@ -1,6 +1,5 @@
 import p5 from 'p5'
-import { PropsWithChildren, useEffect, useRef, useState } from 'react'
-import { CanvasSize } from './types'
+import { useEffect, useRef, useState } from 'react'
 
 declare global {
   var p: p5 // eslint-disable-line
@@ -11,8 +10,13 @@ type Sketch = {
   draw: () => void
 }
 
+export type CanvasSize = {
+  width: number
+  height: number
+}
+
 export const makeP5Canvas =
-  (sketch: Sketch): React.FC<PropsWithChildren<{ size: CanvasSize }>> =>
+  (sketch: Sketch): React.FC<{ size: CanvasSize }> =>
   ({ size }) => {
     const [canvas, setCanvas] = useState<p5>()
     const canvasRef = useRef<HTMLDivElement>(null)
@@ -30,7 +34,7 @@ export const makeP5Canvas =
       }
     }, [canvasRef])
 
-    return <div id={`canvas-container`} style={styles} ref={canvasRef} />
+    return <div style={styles} ref={canvasRef} />
   }
 
 const makeSketch = (s: Sketch, size: CanvasSize) => (p: p5) => {

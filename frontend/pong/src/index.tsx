@@ -1,40 +1,12 @@
 import { useState } from 'react'
 import pjson from '../package.json'
-import { AspectRatio, DefaultHeight, DefaultWidth, FPS } from './config'
-import { makeP5Canvas } from './p5canvas'
-import { onlineGameStart, resolveFrame } from './service'
-import { CanvasSize } from './types'
+import { Pong } from './ui/Pong'
 import { Container } from './ui/container'
 import { Control } from './ui/control'
 import { Entrance } from './ui/entrance'
+import { CanvasSize } from './ui/p5canvas'
 
 const VERSION = pjson.version
-
-const setup =
-  ({ width, height }: CanvasSize) =>
-  () => {
-    p.createCanvas(DefaultWidth, DefaultHeight)
-    p.frameRate(FPS)
-
-    resizeCanvas(width, height)
-    onlineGameStart()
-  }
-
-const resizeCanvas = (width: number, height: number) => {
-  const canvas = document.getElementsByTagName('canvas')[0]
-  if (width > height) {
-    canvas.style.width = `${height * AspectRatio}px`
-    canvas.style.height = `${height}px`
-  } else {
-    canvas.style.width = `${width}px`
-    canvas.style.height = `${width / AspectRatio}px`
-  }
-}
-
-const Pong = makeP5Canvas({
-  setup,
-  draw: resolveFrame,
-})
 
 const PongGame: React.FC<{ size: CanvasSize }> = ({ size }) => {
   const [ready, setReady] = useState(false)

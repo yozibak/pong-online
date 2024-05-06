@@ -81,6 +81,9 @@ const reducers = {
   },
   setPlayMode: s => (mode: PlayMode) => {
     s.playMode = mode
+  },
+  abort: s => () => {
+    s.gameStatus = 'aborted'
   }
 } satisfies ReducerMap<PongState>
 

@@ -6,9 +6,9 @@ import {
   DefaultWidth,
   EdgeThickness,
   ScoreToWin,
-} from '../../../config'
-import { PlayerNumber, Position, Score } from '../../../data/types'
-import { RenderingState } from '../../../domain'
+} from '../../config'
+import { PlayerNumber, Position, Score } from '../../data/types'
+import { RenderingState } from '../../domain'
 
 export const renderState = (state: RenderingState) => {
   p.background(0)

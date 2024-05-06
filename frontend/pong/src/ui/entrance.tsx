@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { PlayMode, PlayerNumber } from '../data/types'
-import { selectOfflineMode } from '../domain/events'
+import { selectOfflineMode } from '../domain/match'
 import { onlineMultiPlayerSetup } from '../service'
 import { Waiting } from './waiting'
-import { isMobile } from '../service/io/control'
+import { isMobile } from '../service/control'
 
 export const getPlayerNumber = (): PlayerNumber => {
   const urlParams = new URLSearchParams(window.location.search)

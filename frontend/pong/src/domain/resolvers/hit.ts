@@ -1,14 +1,7 @@
-import { BarLength } from '../../config'
+import { BarLength, LeftThreshold, RightThreshold } from '../../config'
 import { createVectorFromAngle, sumPosition } from '../../data'
 import { Ball, PlayerBars, Position } from '../../data/types'
 import { Destination } from './ball'
-import {
-  EdgePosition,
-  calcReducedDelta,
-  getBarSide,
-  getMiddleRatio,
-  getMiddleYByRatio,
-} from './helpers/position'
 
 export const resolveBarHit = (ball: Ball, dest: Destination, bars: PlayerBars): Destination => {
   if (ball.missed) return dest
@@ -19,7 +12,14 @@ export const resolveBarHit = (ball: Ball, dest: Destination, bars: PlayerBars): 
   } else return dest
 }
 
-const getBar = (edge: EdgePosition, bars: PlayerBars): Position => {
+export type BarSide = 'right' | 'left'
+
+export const getBarSide = (position: Position): BarSide | undefined => {
+  if (position.x > RightThreshold) return 'right'
+  if (position.x < LeftThreshold) return 'left'
+}
+
+const getBar = (edge: BarSide, bars: PlayerBars): Position => {
   if (edge === 'right') return bars[2].position
   if (edge === 'left') return bars[1].position
   throw Error()
@@ -29,7 +29,7 @@ export const handleHit = (
   ball: Ball,
   dest: Destination,
   bar: Position,
-  edge: EdgePosition
+  edge: BarSide
 ): Destination => {
   const ratioAtBarX = getMiddleRatio(ball.position, dest.position, bar.x)
   const yAtBar = getMiddleYByRatio(ball.position, dest.position, ratioAtBarX)
@@ -67,7 +67,22 @@ const getHitAngle = (abs: number) => {
   return 15
 }
 
-const decideFinalAngle = (angle: number, edge: EdgePosition) => {
+const decideFinalAngle = (angle: number, edge: BarSide) => {
   if (edge === 'right') return 180 - angle
   return angle
 }
+
+export const getMiddleYByRatio = (position: Position, next: Position, ratio: number) => {
+  return position.y + ratio * (next.y - position.y)
+}
+
+export const getMiddleRatio = (position: Position, next: Position, middleX: number) => {
+  const diff = next.x - position.x
+  const mid = middleX - position.x
+  return mid / diff
+}
+
+export const calcReducedDelta = (vec: Position, ratio: number) => ({
+  x: vec.x * ratio,
+  y: vec.y * ratio,
+})

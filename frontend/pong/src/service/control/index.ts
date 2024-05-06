@@ -1,5 +1,5 @@
-import { store } from '../../../data'
-import { inputBuffer } from '../../../domain'
+import { store } from '../../data'
+import { inputBuffer } from '../../domain'
 
 export const isMobile = () => {
   return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)

@@ -1,8 +1,8 @@
-import { BottomThreshold, TopThreshold } from '../../config'
+import { BottomThreshold, LeftThreshold, RightThreshold, TopThreshold } from '../../config'
 import { sumPosition } from '../../data'
 import { Ball, Position } from '../../data/types'
-import { calcEdgeReflectAngle } from './helpers/angle'
-import { getReflectedPosition } from './helpers/position'
+
+export type SurfaceAngle = 'hori' | 'vert'
 
 export type Destination = {
   position: Position
@@ -20,7 +20,7 @@ export const resolveBallDestination = (ball: Ball): Destination => {
   } else {
     return {
       angle: ball.movement.angle,
-      position: nextPosition
+      position: nextPosition,
     }
   }
 }
@@ -29,3 +29,36 @@ const expectBallPosition = (ball: Ball) => sumPosition(ball.position, ball.movem
 
 export const willBallHitEdge = (position: Position): boolean =>
   position.y < TopThreshold || position.y > BottomThreshold
+
+export const calcEdgeReflectAngle = (angle: number, surface: SurfaceAngle): number => {
+  const surfaceAngle = surface === 'hori' ? 360 : 180
+  return surfaceAngle - angle
+}
+
+export const getReflectedPosition = (
+  position: Position,
+  surface: SurfaceAngle,
+  thresholds = {
+    top: TopThreshold,
+    bottom: BottomThreshold,
+    left: LeftThreshold,
+    right: RightThreshold,
+  }
+): Position => {
+  if (surface === 'hori') {
+    return {
+      x: position.x,
+      y: reflectDiff(position.y, thresholds.top, thresholds.bottom),
+    }
+  } else
+    return {
+      x: reflectDiff(position.x, thresholds.left, thresholds.right),
+      y: position.y,
+    }
+}
+
+export const reflectDiff = (val: number, min: number, max: number): number => {
+  if (val < min) return min + (min - val)
+  if (val > max) return max - (val - max)
+  return val
+}

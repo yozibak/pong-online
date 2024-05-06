@@ -1,7 +1,7 @@
 import type { GraphQLSubscription } from 'aws-amplify/api'
-import { PlayerNumber } from '../../../data/types'
-import { opponentPlayerNumber } from '../../../domain/input/helpers'
-import { NetworkPayload } from '../../../domain/output'
+import { PlayerNumber } from '../../data/types'
+import { opponentPlayerNumber } from '../../domain/input/helpers'
+import { NetworkPayload } from '../../domain/output'
 import { client } from './client'
 import { sendData, subscribeGame } from './queries'
 

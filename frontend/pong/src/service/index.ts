@@ -1,12 +1,13 @@
 import { GameID } from '../config'
 import { PlayerNumber } from '../data/types'
 import { getRenderingState, inputBuffer } from '../domain'
-import { frameEvent, initOnlineGame } from '../domain/events'
+import { resolveStateAtFrame } from '../domain/events'
+import { initOnlineGame } from '../domain/match'
 import { getNetworkPayload } from '../domain/output'
-import { detectKeyControl } from './io/control'
-import { sendDataToServer } from './io/network'
-import { makeNetwork } from './io/network'
-import { renderState } from './render/game/render'
+import { detectKeyControl } from './control'
+import { sendDataToServer } from './network'
+import { makeNetwork } from './network'
+import { renderState } from './render/render'
 
 export const network = makeNetwork()
 
@@ -19,9 +20,9 @@ export const onlineGameStart = () => {
   network.updateHandler((d) => inputBuffer.pushNetworkPayload(d))
 }
 
-export const resolveFrame = () => {
+export const consumeFrame = () => {
   detectKeyControl()
-  frameEvent()
+  resolveStateAtFrame()
   const renderingState = getRenderingState()
   renderState(renderingState)
 

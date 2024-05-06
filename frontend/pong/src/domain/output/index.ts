@@ -26,6 +26,7 @@ export enum EventSignal {
   JOIN = 'JOIN',
   LEAVE = 'LEAVE',
   SCORE = 'SCORE',
+  GAMESET = 'GAMESET'
 }
 
 export const getNetworkPayload = (): NetworkPayload => {
@@ -51,6 +52,9 @@ export const getNetworkPayload = (): NetworkPayload => {
 }
 
 export const getSignal = (): Signal => {
+  if (store.current.gameStatus === 'gameset') {
+    return EventSignal.GAMESET
+  }
   if (store.current.startTime) {
     return store.current.startTime.toString()
   }
