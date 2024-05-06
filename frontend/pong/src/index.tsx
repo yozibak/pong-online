@@ -5,8 +5,8 @@ import { makeP5Canvas } from './p5canvas'
 import { initialSetup, resolveFrame } from './service'
 import { CanvasSize } from './types'
 import { Container } from './ui/container'
-import { Welcome } from './ui/welcome'
 import { Control } from './ui/control'
+import { Welcome } from './ui/welcome'
 
 const VERSION = pjson.version
 

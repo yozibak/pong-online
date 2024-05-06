@@ -1,4 +1,4 @@
-import { Ball, PongState } from '../../data/types'
+import { Ball, PlayerBars, PongState } from '../../data/types'
 import { Destination, resolveBallDestination } from './ball'
 import { resolvePlayerBars } from './bar'
 import { resolveBarHit } from './hit'
@@ -11,25 +11,23 @@ export type StateSnapshot = Pick<PongState, 'ball' | 'bars' | 'score' | 'playerN
 export const calculateNextState = (snapshot: StateSnapshot): StateSnapshot => {
   if (snapshot.calcFrames === 0) return snapshot
   const nextBars = resolvePlayerBars(snapshot.bars, snapshot.calcFrames, snapshot.playerNumber)
-
-  if ((snapshot.receiving && snapshot.calcFrames === 1) || !snapshot.receiving) {
-    const nextBallDestination = resolveBallDestination(snapshot.ball)
-    const finalDest = resolveBarHit(snapshot.ball, nextBallDestination, nextBars)
-    const nextSnapshot: StateSnapshot = {
-      ...snapshot,
-      ball: updateBall(snapshot.ball, finalDest),
-      bars: nextBars,
-      calcFrames: snapshot.calcFrames - 1,
-    }
-    return calculateNextState(nextSnapshot)
-  } else {
-    const nextSnapshot: StateSnapshot = {
-      ...snapshot,
-      bars: nextBars,
-      calcFrames: snapshot.calcFrames - 1,
-    }
-    return calculateNextState(nextSnapshot)
+  const doesBallRequireCalc =
+    (snapshot.receiving && snapshot.calcFrames === 1) || !snapshot.receiving
+  const ball = doesBallRequireCalc ? calcBall(snapshot, nextBars) : snapshot.ball
+  const nextSnapshot: StateSnapshot = {
+    ...snapshot,
+    bars: nextBars,
+    calcFrames: snapshot.calcFrames - 1,
+    ball,
   }
+  return calculateNextState(nextSnapshot)
+}
+
+const calcBall = (snapshot: StateSnapshot, nextBars: PlayerBars): Ball => {
+  const nextBallDestination = resolveBallDestination(snapshot.ball)
+  const finalDest = resolveBarHit(snapshot.ball, nextBallDestination, nextBars)
+  const ball = updateBall(snapshot.ball, finalDest)
+  return ball
 }
 
 const updateBall = (ball: Ball, dest: Destination): Ball => {

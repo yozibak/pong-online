@@ -1,6 +1,10 @@
-import { createVector } from "../../data";
-import { Ball } from "../../data/types";
-import { resolveBallDestination } from "./ball";
+import { createVector } from '../../data'
+import { Ball } from '../../data/types'
+import { resolveBallDestination } from './ball'
+
+jest.mock('../../config', () => ({
+  TopThreshold: 10,
+}))
 
 test(`${resolveBallDestination.name}`, () => {
   const ball: Ball = {

@@ -10,9 +10,7 @@ export const mergeInputsWithState = (
   localState: PongState
 ): StateSnapshot => {
   const receiverState = mergeState(localState, networkPayload)
-  const snapshot = applyLocalInput(receiverState, localInput, localState.playerNumber)
-  // console.log(snapshot.receiving, snapshot.ball.position.position, snapshot.ball.movement.position, snapshot.bars, snapshot.calcFrames)
-  return snapshot
+  return applyLocalInput(receiverState, localInput, localState.playerNumber)
 }
 
 export const mergeState = (

@@ -1,9 +1,10 @@
 import { StateSnapshot, calculateNextState } from '.'
+import { BarVelocity } from '../../config'
 import { createVector } from '../../data'
 import { Ball, Bar } from '../../data/types'
 
 describe(`${calculateNextState.name}`, () => {
-  const prepareSnapshot = (): StateSnapshot => {
+  const prepareSnapshot = (): Omit<StateSnapshot, 'calcFrames' | 'receiving'> => {
     const ball: Ball = {
       position: createVector({ x: 300, y: 200 }),
       movement: createVector({ x: 10, y: 10 }),
@@ -32,17 +33,35 @@ describe(`${calculateNextState.name}`, () => {
         1: 0,
         2: 0,
       },
-      calcFrames: 1,
       playerNumber: 1,
-      receiving: false
     }
   }
-  it(`can calculate next state`, () => {
+  const clone = (o: object) => JSON.parse(JSON.stringify(o))
+  it(`calculates next state when in sync`, () => {
     const snapshot = prepareSnapshot()
-    const next = calculateNextState(snapshot)
-    expect(next).toMatchSnapshot()
+    const prev = clone(snapshot)
+    const next = calculateNextState({ ...snapshot, calcFrames: 1, receiving: true })
+    expect(next.ball.position.x).toBe(prev.ball.position.x + prev.ball.movement.x)
+    expect(next.ball.position.y).toBe(prev.ball.position.y + prev.ball.movement.y)
+    expect(next.bars[1].position.y).toBe(prev.bars[1].position.y - BarVelocity)
+    expect(next.bars[2].position.y).toBe(prev.bars[2].position.y - BarVelocity)
   })
-  it(`can recursively calculate current state from old network snapshot`, () => {
-    expect(calculateNextState({ ...prepareSnapshot(), calcFrames: 2 })).toMatchSnapshot()
+  it(`calculates player's side only once when receiving because it uses local state without delay`, () => {
+    const snapshot = prepareSnapshot()
+    const prev = clone(snapshot)
+    const next = calculateNextState({ ...snapshot, calcFrames: 3, receiving: true })
+    expect(next.ball.position.x).toBe(prev.ball.position.x + prev.ball.movement.x)
+    expect(next.ball.position.y).toBe(prev.ball.position.y + prev.ball.movement.y)
+    expect(next.bars[1].position.y).toBe(prev.bars[1].position.y - BarVelocity)
+    expect(next.bars[2].position.y).toBe(prev.bars[2].position.y - BarVelocity * 3) // calc 3 times recursively
+  })
+  it(`calculates ball and opponent's bar recursively when not receiving`, () => {
+    const snapshot = prepareSnapshot()
+    const prev = clone(snapshot)
+    const next = calculateNextState({ ...snapshot, calcFrames: 3, receiving: false })
+    expect(next.ball.position.x).toBe(prev.ball.position.x + prev.ball.movement.x * 3)
+    expect(next.ball.position.y).toBe(prev.ball.position.y + prev.ball.movement.y * 3)
+    expect(next.bars[1].position.y).toBe(prev.bars[1].position.y - BarVelocity)
+    expect(next.bars[2].position.y).toBe(prev.bars[2].position.y - BarVelocity * 3)
   })
 })

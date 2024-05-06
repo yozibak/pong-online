@@ -21,6 +21,8 @@ export const frameEvent = () => {
     waitingEvent()
   } else if (store.current.gameStatus === 'started') {
     gameEvent()
+  } else if (store.current.gameStatus === 'gameset') {
+    // TODO: close the connection after a while
   }
 }
 
