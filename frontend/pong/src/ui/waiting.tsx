@@ -1,56 +1,51 @@
 import qrcode from 'qrcode'
 import { useEffect, useRef } from 'react'
-import { GameID } from '../config'
 import { onlineMatchEvent } from '../domain/events'
-import { HandShakeData, sendHandShakeData, startHandShakeSubscription } from '../service/io/network'
+import { EventSignal, NetworkPayload, getNetworkPayload } from '../domain/output'
+import { network } from '../service'
+import { sendDataToServer } from '../service/io/network'
 
 const genInvitationLink = () => `${window.location.origin}/?player=2`
 
-const Player2Joined = 'Player2Joined'
+const onHandShake1 = (d: NetworkPayload) => {
+  if (d.signal !== EventSignal.JOIN) return
+  onlineMatchEvent()
+}
 
-const onHandShake = async (d: HandShakeData) => {
-  if (d.body === Player2Joined) {
-    // player 1
-    const startTime = onlineMatchEvent()
-    await sendHandShakeData({
-      gameID: GameID,
-      playerNumber: 1,
-      body: startTime.toString(),
+const onHandShake2 = (d: NetworkPayload) => {
+  const startTime = Number(d.signal)
+  onlineMatchEvent(startTime)
+}
+
+export const useJoinAsGuest = (isGuest: boolean) => {
+  useEffect(() => {
+    if (!isGuest) return
+    sendDataToServer({
+      ...getNetworkPayload(),
+      signal: EventSignal.JOIN,
     })
-  } else {
-    // player 2
-    const startTime = Number(d.body)
-    onlineMatchEvent(startTime)
-  }
+  }, [isGuest])
+}
+
+export const useHandShake = (isGuest: boolean, getReady: () => void) => {
+  useEffect(() => {
+    network.updateHandler(async (d) => {
+      if (isGuest) {
+        onHandShake2(d)
+      } else {
+        onHandShake1(d)
+      }
+      getReady()
+    })
+  }, [isGuest, getReady])
 }
 
 export const Waiting: React.FC<{ isGuest: boolean; getReady: () => void }> = ({
   isGuest,
   getReady,
 }) => {
-  useEffect(() => {
-    const subscription = startHandShakeSubscription(GameID, isGuest ? 1 : 2, async (d) => {
-      await onHandShake(d)
-      getReady()
-    })
-    return () => {
-      subscription.unsubscribe()
-    }
-  }, [isGuest, getReady])
-  useEffect(() => {
-    let unmounted = false
-    if (isGuest) {
-      if (unmounted) return
-      sendHandShakeData({
-        gameID: GameID,
-        playerNumber: 2,
-        body: Player2Joined,
-      })
-    }
-    return () => {
-      unmounted = true
-    }
-  }, [isGuest])
+  useHandShake(isGuest, getReady)
+  useJoinAsGuest(isGuest)
   return (
     <div>
       <h1>Waiting for another player...</h1>

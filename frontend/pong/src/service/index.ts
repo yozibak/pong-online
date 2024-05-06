@@ -8,12 +8,15 @@ import { sendDataToServer } from './io/network'
 import { makeNetwork } from './io/network/buffer'
 import { renderState } from './render/game/render'
 
-const network = makeNetwork()
+export const network = makeNetwork()
 
-export const initialSetup = () => {
-  const playerNumber = getPlayerNumber()
+export const multiPlayerSetup = (playerNumber: PlayerNumber) => {
   gamestartEvent(playerNumber)
-  network.start(GameID, playerNumber === 1 ? 2 : 1, (d) => inputBuffer.pushNetworkPayload(d))
+  network.init(playerNumber, GameID)
+}
+
+export const gameStart = () => {
+  network.updateHandler((d) => inputBuffer.pushNetworkPayload(d))
 }
 
 export const resolveFrame = () => {
@@ -27,13 +30,4 @@ export const resolveFrame = () => {
   } else {
     network.stop()
   }
-}
-
-export const getPlayerNumber = (): PlayerNumber => {
-  const urlParams = new URLSearchParams(window.location.search)
-  const number = Number(urlParams.get('player'))
-  if (number === 1 || number === 2) {
-    return number
-  }
-  return 1
 }

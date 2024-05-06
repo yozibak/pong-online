@@ -1,10 +1,21 @@
 import { startSubscription } from '.'
+import { PlayerNumber } from '../../../data/types'
+import { opponentPlayerNumber } from '../../../domain/input/helpers'
+import { NetworkPayload } from '../../../domain/output'
 
 export const makeNetwork = () => {
   let subscription: ReturnType<typeof startSubscription>
+  let listenTo: PlayerNumber
+  let gameID: string
+  let subscriptionHandler: (d: NetworkPayload) => void = () => undefined
   return {
-    start(...args: Parameters<typeof startSubscription>) {
-      subscription = startSubscription(...args)
+    init(playerNumber: PlayerNumber, id: string) {
+      listenTo = opponentPlayerNumber(playerNumber)
+      gameID = id
+      subscription = startSubscription(gameID, listenTo, (d) => subscriptionHandler(d))
+    },
+    updateHandler(handler: (d: NetworkPayload) => void) {
+      subscriptionHandler = handler
     },
     stop() {
       subscription.unsubscribe()

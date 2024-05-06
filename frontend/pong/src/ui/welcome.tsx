@@ -1,12 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Waiting } from './waiting'
+import { PlayerNumber } from '../data/types'
+import { multiPlayerSetup } from '../service'
 
 type PlayMode = 'online-multi'
 
-export const isOnlineGuest = (): boolean => {
+export const getPlayerNumber = (): PlayerNumber => {
   const urlParams = new URLSearchParams(window.location.search)
   const number = Number(urlParams.get('player'))
-  return number === 2
+  if (number === 1 || number === 2) return number
+  return 1
 }
 
 export const Welcome: React.FC<{ version: string; getReady: () => void }> = ({
@@ -14,7 +17,10 @@ export const Welcome: React.FC<{ version: string; getReady: () => void }> = ({
   getReady,
 }) => {
   const [mode, setMode] = useState<PlayMode>()
-  const isGuest = isOnlineGuest()
+  const playerNumber = getPlayerNumber()
+  const isGuest = playerNumber === 2
+
+  useEffect(() => multiPlayerSetup(playerNumber), [])
 
   if (!mode)
     return (
@@ -25,7 +31,7 @@ export const Welcome: React.FC<{ version: string; getReady: () => void }> = ({
         <button onClick={() => setMode('online-multi')}>🏓 {isGuest ? `Join` : `Play`} 🏓</button>
       </div>
     )
-  return <Waiting isGuest={isOnlineGuest()} getReady={getReady} />
+  return <Waiting isGuest={isGuest} getReady={getReady} />
 }
 
 const style: React.CSSProperties = {

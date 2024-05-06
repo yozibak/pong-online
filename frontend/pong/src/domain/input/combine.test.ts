@@ -57,6 +57,7 @@ describe(`${_mergeState.name}`, () => {
       two: 0,
     },
     frameCount: 398,
+    signal: null
   }
   it(`should use opponent's network state when ball is on the other side`, () => {
     jest.spyOn(helpers, 'isPlayerReceiving').mockReturnValue(false)

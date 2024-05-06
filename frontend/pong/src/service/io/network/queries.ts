@@ -6,6 +6,7 @@ export const sendData = /* GraphQL */ `
     $gameID: String!
     $playerNumber: Int!
     $score: ScoreInput!
+    $signal: String
   ) {
     sendData(
       bar: $bar
@@ -14,6 +15,7 @@ export const sendData = /* GraphQL */ `
       playerNumber: $playerNumber
       ball: $ball
       score: $score
+      signal: $signal
     ) {
       ball {
         missed
@@ -40,6 +42,7 @@ export const sendData = /* GraphQL */ `
       frameCount
       gameID
       playerNumber
+      signal
     }
   }
 `
@@ -72,26 +75,7 @@ export const subscribeGame = /* GraphQL */ `
       gameID
       playerNumber
       frameCount
-    }
-  }
-`
-
-export const sendHandShake = /* GraphQL */ `
-  mutation MyMutation($body: String!, $gameID: String!, $playerNumber: Int!) {
-    sendHandShake(body: $body, gameID: $gameID, playerNumber: $playerNumber) {
-      body
-      gameID
-      playerNumber
-    }
-  }
-`
-
-export const subscribeHandShake = /* GraphQL */ `
-  subscription MySubscription($gameID: String!, $playerNumber: Int!) {
-    subscribeHandShake(gameID: $gameID, playerNumber: $playerNumber) {
-      body
-      gameID
-      playerNumber
+      signal
     }
   }
 `

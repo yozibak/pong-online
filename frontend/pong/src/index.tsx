@@ -2,7 +2,7 @@ import { useState } from 'react'
 import pjson from '../package.json'
 import { AspectRatio, DefaultHeight, DefaultWidth, FPS } from './config'
 import { makeP5Canvas } from './p5canvas'
-import { initialSetup, resolveFrame } from './service'
+import { gameStart, resolveFrame } from './service'
 import { CanvasSize } from './types'
 import { Container } from './ui/container'
 import { Control } from './ui/control'
@@ -17,7 +17,7 @@ const setup =
     p.frameRate(FPS)
 
     resizeCanvas(width, height)
-    initialSetup()
+    gameStart()
   }
 
 const resizeCanvas = (width: number, height: number) => {

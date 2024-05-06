@@ -18,6 +18,14 @@ export type NetworkPayload = {
     one: number
     two: number
   }
+  signal: Signal
+}
+
+export type Signal = EventSignal | string | null
+export enum EventSignal {
+  JOIN = 'JOIN',
+  LEAVE = 'LEAVE',
+  SCORE = 'SCORE',
 }
 
 export const getNetworkPayload = (): NetworkPayload => {
@@ -37,6 +45,14 @@ export const getNetworkPayload = (): NetworkPayload => {
     score: {
       one: store.current.score[1],
       two: store.current.score[2],
-    }
+    },
+    signal: getSignal(),
   }
+}
+
+export const getSignal = (): Signal => {
+  if (store.current.startTime) {
+    return store.current.startTime.toString()
+  }
+  return null
 }

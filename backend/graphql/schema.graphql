@@ -5,6 +5,7 @@ type Data {
   bar: Bar!
   frameCount: Int!
   score: Score!
+  signal: String
 }
 
 input BallInput {
@@ -49,12 +50,6 @@ type Score {
   two: Int!
 }
 
-type HandShake {
-  gameID: String!
-  playerNumber: Int!
-  body: String!
-}
-
 type Mutation {
   sendData(
     gameID: String!
@@ -63,19 +58,12 @@ type Mutation {
     bar: BarInput!
     frameCount: Int!
     score: ScoreInput!
+    signal: String
   ): Data
-
-  sendHandShake(
-    gameID: String!
-    playerNumber: Int!
-    body: String!
-  ): HandShake
 }
 
 type Subscription {
   subscribeGame(gameID: String!, playerNumber: Int!): Data @aws_subscribe(mutations: ["sendData"])
-
-  subscribeHandShake(gameID: String!, playerNumber: Int!): HandShake @aws_subscribe(mutations: ["sendHandShake"])
 }
 
 type Query {
