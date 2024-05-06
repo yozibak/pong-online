@@ -33,7 +33,7 @@ export const makeInputBuffer = (playerNumber: PlayerNumber = 1) => {
 }
 
 export const makeNetworkBuffer = () => {
-  const buffer: NetworkPayload[] = []
+  let buffer: NetworkPayload[] = []
   return {
     push: (payload: NetworkPayload) => {
       buffer.push(payload)
@@ -42,7 +42,7 @@ export const makeNetworkBuffer = () => {
       const idx = buffer.findLastIndex((pl) => pl.frameCount <= frameCount)
       if (idx !== -1) {
         const payload = buffer[idx]
-        buffer.splice(0, buffer.length - idx)
+        buffer = buffer.slice(idx)
         return payload
       }
       return null

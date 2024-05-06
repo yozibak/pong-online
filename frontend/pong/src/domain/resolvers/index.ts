@@ -9,6 +9,7 @@ export type StateSnapshot = Pick<PongState, 'ball' | 'bars' | 'score' | 'playerN
 }
 
 export const calculateNextState = (snapshot: StateSnapshot): StateSnapshot => {
+  if (snapshot.calcFrames > 100) throw new BadConnectionError()
   if (snapshot.calcFrames === 0) return snapshot
   const nextBars = resolvePlayerBars(snapshot.bars, snapshot.calcFrames, snapshot.playerNumber)
   const doesBallRequireCalc =
@@ -35,4 +36,10 @@ const updateBall = (ball: Ball, dest: Destination): Ball => {
   ball.position.set(dest.position)
   ball.movement.setAngle(dest.angle)
   return ball
+}
+
+export class BadConnectionError extends Error {
+  constructor() {
+    super('Bad connection')
+  }
 }

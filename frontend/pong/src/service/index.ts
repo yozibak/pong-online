@@ -1,5 +1,5 @@
 import { GameID } from '../config'
-import { PlayerNumber } from '../data/types'
+import { GameStatus, PlayerNumber } from '../data/types'
 import { getRenderingState, inputBuffer } from '../domain'
 import { resolveStateAtFrame } from '../domain/events'
 import { initOnlineGame } from '../domain/match'
@@ -26,7 +26,13 @@ export const consumeFrame = () => {
   const renderingState = getRenderingState()
   renderState(renderingState)
 
-  if (renderingState.gameStatus !== 'gameset') {
+  if (renderingState.mode === 'online-multi') {
+    handleNetwork(renderingState.gameStatus)
+  }
+}
+
+const handleNetwork = (gameStatus: GameStatus) => {
+  if (gameStatus === 'ready' || gameStatus === 'started') {
     sendDataToServer(getNetworkPayload())
   } else {
     network.stop()

@@ -29,7 +29,7 @@ export const _mergeState = (
   const receiving = isPlayerReceiving(local.playerNumber, local.ball.position)
   const networkState = convertPayload(networkPayload)
   const localPN = local.playerNumber
-  const calcFrames = (local.frameCount - networkPayload.frameCount) || 1
+  const calcFrames = local.frameCount - networkPayload.frameCount || 1
   return {
     ...networkState,
     calcFrames,

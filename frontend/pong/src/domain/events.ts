@@ -2,15 +2,24 @@ import { inputBuffer } from '.'
 import { store } from '../data'
 import { PlayerNumber } from '../data/types'
 import { mergeInputsWithState } from './input/combine'
-import { calculateNextState } from './resolvers'
+import { BadConnectionError, calculateNextState } from './resolvers'
 import { getBarSide } from './resolvers/hit'
 import { checkWinner, isBallOut } from './score'
 
 export const resolveStateAtFrame = () => {
-  if (store.current.gameStatus === 'ready') {
-    readyCountEvent()
-  } else if (store.current.gameStatus === 'started') {
-    gameEvent()
+  try {
+    if (store.current.gameStatus === 'ready') {
+      readyCountEvent()
+    } else if (store.current.gameStatus === 'started') {
+      gameEvent()
+    }
+  } catch (e) {
+    if (e instanceof BadConnectionError) {
+      store.abort()
+    } else {
+      console.error(e)
+      throw e
+    }
   }
 }
 

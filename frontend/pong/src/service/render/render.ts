@@ -15,6 +15,10 @@ export const renderState = (state: RenderingState) => {
   p.fill(200)
   p.noStroke()
 
+  if (state.gameStatus === 'aborted') {
+    renderAborted()
+    return
+  }
   if (state.gameStatus === 'ready') {
     renderSecondsToStart(state.secondsToStart)
   }
@@ -72,4 +76,10 @@ const SecondSize = 40
 const renderSecondsToStart = (secs: number) => {
   p.textSize(SecondSize)
   p.text(secs, DefaultWidth / 2 - SecondSize / 4, DefaultHeight / 2 - SecondSize / 2)
+}
+
+const renderAborted = () => {
+  p.textSize(8)
+  p.text('☹️ Oops! ☹️', 0, DefaultHeight / 2)
+  p.text('Your mate has gone out of reach...', 0, DefaultHeight / 2 + 16)
 }
