@@ -13,18 +13,18 @@ export const Control = () => {
         }}
       >
         <button
-          onPointerDown={() => inputBuffer.pushLocalInput('up')}
-          onPointerUp={() => inputBuffer.pushLocalInput('still')}
-          style={btn}
-        >
-          ↑
-        </button>
-        <button
           onPointerDown={() => inputBuffer.pushLocalInput('down')}
           onPointerUp={() => inputBuffer.pushLocalInput('still')}
           style={btn}
         >
           ↓
+        </button>
+        <button
+          onPointerDown={() => inputBuffer.pushLocalInput('up')}
+          onPointerUp={() => inputBuffer.pushLocalInput('still')}
+          style={btn}
+        >
+          ↑
         </button>
       </div>
     </div>

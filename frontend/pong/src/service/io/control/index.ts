@@ -1,18 +1,20 @@
+import { store } from '../../../data'
 import { inputBuffer } from '../../../domain'
 
-const isMobile = () => {
-  return window.innerWidth < 768
+export const isMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
 }
 
-export const detectControl = () => {
-  if (isMobile()) {
-    // detectTouch()
+export const detectKeyControl = () => {
+  if (isMobile()) return
+  if (store.current.playMode === 'online-multi') {
+    detectOnlineKey()
   } else {
-    detectKey()
+    detectOfflineKey()
   }
 }
 
-const detectKey = () => {
+const detectOnlineKey = () => {
   if (p.keyIsDown(p.UP_ARROW)) {
     inputBuffer.pushLocalInput('up')
   } else if (p.keyIsDown(p.DOWN_ARROW)) {
@@ -36,16 +38,6 @@ const detectOfflineKey = () => {
     inputBuffer.pushLocalInput('down', 2)
   } else {
     inputBuffer.pushLocalInput('still', 2)
-  }
-}
-
-const detectTouch = () => {
-  if (p.mouseX > (window.innerWidth * 2) / 3) {
-    inputBuffer.pushLocalInput('up')
-  } else if (p.mouseX < window.innerWidth / 3) {
-    inputBuffer.pushLocalInput('down')
-  } else {
-    inputBuffer.pushLocalInput('still')
   }
 }
 

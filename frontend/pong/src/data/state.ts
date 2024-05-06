@@ -9,7 +9,7 @@ import {
 import { StateSnapshot } from '../domain/resolvers'
 import { ReducerMap, makeStore } from './helpers/store'
 import { createVector, createVectorFromAngle } from './primitives'
-import { Ball, PlayerCommand, PlayerNumber, PongState } from './types'
+import { Ball, PlayMode, PlayerCommand, PlayerNumber, PongState } from './types'
 
 export const initBall = (): Ball => ({
   position: createVector({ x: DefaultWidth / 2, y: DefaultHeight / 2 }),
@@ -79,6 +79,9 @@ const reducers = {
   incrementFrameCount: (s) => () => {
     s.frameCount++
   },
+  setPlayMode: s => (mode: PlayMode) => {
+    s.playMode = mode
+  }
 } satisfies ReducerMap<PongState>
 
 export const makePongStore = () => makeStore<PongState>(InitialState)(reducers)

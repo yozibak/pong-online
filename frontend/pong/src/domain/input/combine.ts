@@ -1,5 +1,5 @@
 import { createVector } from '../../data'
-import { PlayerNumber, PongState } from '../../data/types'
+import { PlayMode, PlayerNumber, PongState } from '../../data/types'
 import { NetworkPayload } from '../output'
 import { StateSnapshot } from '../resolvers'
 import { LatestInputs } from './buffer'
@@ -7,10 +7,11 @@ import { isPlayerReceiving } from './helpers'
 
 export const mergeInputsWithState = (
   { localInput, networkPayload }: LatestInputs,
-  localState: PongState
+  localState: PongState,
+  playMode: PlayMode = 'online-multi'
 ): StateSnapshot => {
   const receiverState = mergeState(localState, networkPayload)
-  return applyLocalInput(receiverState, localInput, localState.playerNumber)
+  return applyLocalInput(receiverState, localInput, localState.playerNumber, playMode)
 }
 
 export const mergeState = (
@@ -28,7 +29,7 @@ export const _mergeState = (
   const receiving = isPlayerReceiving(local.playerNumber, local.ball.position)
   const networkState = convertPayload(networkPayload)
   const localPN = local.playerNumber
-  const calcFrames = local.frameCount - networkPayload.frameCount
+  const calcFrames = (local.frameCount - networkPayload.frameCount) || 1
   return {
     ...networkState,
     calcFrames,
@@ -70,16 +71,33 @@ const convertPayload = (
 const applyLocalInput = (
   snapshot: StateSnapshot,
   localInput: LatestInputs['localInput'],
-  playerNumber: PlayerNumber
+  playerNumber: PlayerNumber,
+  playMode: PlayMode
 ): StateSnapshot => {
-  return {
-    ...snapshot,
-    bars: {
-      ...snapshot.bars,
-      [playerNumber]: {
-        ...snapshot.bars[playerNumber],
-        command: localInput[playerNumber],
+  if (playMode === 'online-multi') {
+    return {
+      ...snapshot,
+      bars: {
+        ...snapshot.bars,
+        [playerNumber]: {
+          ...snapshot.bars[playerNumber],
+          command: localInput[playerNumber],
+        },
       },
-    },
+    }
+  } else {
+    return {
+      ...snapshot,
+      bars: {
+        1: {
+          ...snapshot.bars[1],
+          command: localInput[1],
+        },
+        2: {
+          ...snapshot.bars[2],
+          command: localInput[2],
+        },
+      },
+    }
   }
 }

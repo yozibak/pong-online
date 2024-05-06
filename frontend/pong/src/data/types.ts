@@ -6,6 +6,7 @@ export type PongState = {
   score: Score
   frameCount: number
   startTime: number
+  playMode?: PlayMode
 }
 
 export type GameStatus = 'ready' | 'started' | 'gameset'
@@ -38,3 +39,5 @@ export type PongVector = Position & {
 export type Position = { x: number; y: number }
 
 export type PlayerNumber = 1 | 2
+
+export type PlayMode = 'online-multi' | 'offline-multi' | 'offline-solo'

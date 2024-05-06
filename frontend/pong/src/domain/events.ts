@@ -1,19 +1,32 @@
 import { inputBuffer } from '.'
 import { store } from '../data'
-import { PlayerNumber } from '../data/types'
+import { PlayMode, PlayerNumber } from '../data/types'
 import { mergeInputsWithState } from './input/combine'
+import { EventSignal, Signal } from './output'
 import { calculateNextState } from './resolvers'
 import { getBarSide } from './resolvers/helpers/position'
 import { checkWinner, isBallOut } from './resolvers/score'
 
-export const onlineMatchEvent = (startTime?: number) => {
-  store.setStartTime(startTime)
-  return store.current.startTime
+export const receiveGuestJoinAndDecideStartTime = (signal: Signal) => {
+  if (signal !== EventSignal.JOIN) return
+  store.setStartTime()
 }
 
-export const gamestartEvent = (pn: PlayerNumber) => {
+export const receiveGameStartTimeEvent = (signal: Signal) => {
+  const startTime = Number(signal)
+  if (Number.isNaN(startTime)) return
+  store.setStartTime(startTime)
+}
+
+export const selectOfflineMode = (mode: PlayMode) => {
+  store.setPlayMode(mode)
+  store.setStartTime()
+}
+
+export const initOnlineGame = (pn: PlayerNumber) => {
   inputBuffer.playerNumber = pn
   store.setPlayer(pn)
+  store.setPlayMode('online-multi')
 }
 
 export const frameEvent = () => {
@@ -46,7 +59,8 @@ const gameEvent = () => {
 const resolveState = () => {
   const snapshot = mergeInputsWithState(
     inputBuffer.getLatestInputs(store.current.frameCount),
-    store.current
+    store.current,
+    store.current.playMode
   )
   const nextSnapshot = calculateNextState(snapshot)
   store.updateBySnapshot(nextSnapshot)

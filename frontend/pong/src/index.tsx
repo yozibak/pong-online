@@ -2,11 +2,11 @@ import { useState } from 'react'
 import pjson from '../package.json'
 import { AspectRatio, DefaultHeight, DefaultWidth, FPS } from './config'
 import { makeP5Canvas } from './p5canvas'
-import { gameStart, resolveFrame } from './service'
+import { onlineGameStart, resolveFrame } from './service'
 import { CanvasSize } from './types'
 import { Container } from './ui/container'
 import { Control } from './ui/control'
-import { Welcome } from './ui/welcome'
+import { Entrance } from './ui/entrance'
 
 const VERSION = pjson.version
 
@@ -17,7 +17,7 @@ const setup =
     p.frameRate(FPS)
 
     resizeCanvas(width, height)
-    gameStart()
+    onlineGameStart()
   }
 
 const resizeCanvas = (width: number, height: number) => {
@@ -46,7 +46,7 @@ const PongGame: React.FC<{ size: CanvasSize }> = ({ size }) => {
           <Control />
         </>
       ) : (
-        <Welcome version={VERSION} getReady={() => setReady(true)} />
+        <Entrance version={VERSION} getReady={() => setReady(true)} />
       )}
     </Container>
   )
