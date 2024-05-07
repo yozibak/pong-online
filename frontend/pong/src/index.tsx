@@ -1,20 +1,19 @@
 import { useState } from 'react'
 import pjson from '../package.json'
-import { Pong } from './ui/Pong'
-import { Container } from './ui/container'
-import { Control } from './ui/control'
+import { GameCanvas, getCanvasContainerSize } from './ui/Pong'
+import { Container, ContainerSize } from './ui/container'
 import { Entrance } from './ui/entrance'
-import { CanvasSize } from './ui/p5canvas'
+import { Control } from './ui/control'
 
 const VERSION = pjson.version
 
-const PongGame: React.FC<{ size: CanvasSize }> = ({ size }) => {
+const PongGame: React.FC<{ size: ContainerSize }> = ({ size }) => {
   const [ready, setReady] = useState(false)
   return (
     <Container size={size}>
       {ready ? (
         <>
-          <Pong size={size} />
+          <GameCanvas size={getCanvasContainerSize(size)} />
           <Control />
         </>
       ) : (

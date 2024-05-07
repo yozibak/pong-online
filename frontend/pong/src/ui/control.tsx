@@ -3,7 +3,7 @@ import { inputBuffer } from '../domain'
 export const Control = () => {
   if (window.innerWidth > 800) return <></>
   return (
-    <div style={{ width: '100%', position: 'absolute', bottom: 20 }}>
+    <div style={{ width: '100%', }}>
       <div
         style={{
           maxWidth: 300,

@@ -1,61 +1,46 @@
 import p5 from 'p5'
 import { useEffect, useRef, useState } from 'react'
+import { ContainerSize } from './container'
 
 declare global {
   var p: p5 // eslint-disable-line
 }
 
 type Sketch = {
-  setup: (size: CanvasSize) => () => void
+  setup: () => void
   draw: () => void
 }
 
-export type CanvasSize = {
-  width: number
-  height: number
-}
-
 export const makeP5Canvas =
-  (sketch: Sketch): React.FC<{ size: CanvasSize }> =>
+  (sketch: Sketch): React.FC<{ size: ContainerSize }> =>
   ({ size }) => {
     const [canvas, setCanvas] = useState<p5>()
-    const canvasRef = useRef<HTMLDivElement>(null)
+    const containerRef = useRef<HTMLDivElement>(null)
 
     let mount = false
     useEffect(() => {
-      if (canvasRef.current && !canvas) {
+      if (containerRef.current && !canvas) {
         if (!mount) {
-          setCanvas(new p5(makeSketch(sketch, size), canvasRef.current))
+          setCanvas(new p5(makeSketch(sketch), containerRef.current))
           mount = true
         }
       }
       return () => {
         canvas && canvas.remove()
       }
-    }, [canvasRef])
+    }, [containerRef])
 
-    return <div style={styles} ref={canvasRef} />
+    return <div style={styles(size)} ref={containerRef} />
   }
 
-const makeSketch = (s: Sketch, size: CanvasSize) => (p: p5) => {
+const makeSketch = (s: Sketch) => (p: p5) => {
   globalThis.p = p
-  p.setup = s.setup(size)
+  p.setup = () => s.setup()
   p.draw = () => s.draw()
 }
 
-const styles: React.CSSProperties = {
-  position: 'relative',
+const styles = ({ width, height }: ContainerSize): React.CSSProperties => ({
   zIndex: 10,
-  width: '100%',
-  height: '100%',
-  overflow: 'hidden',
-  backgroundColor: 'rgba(0,0,0,0.9)',
-  margin: '0 auto',
-  touchAction: 'manipulation',
-  overflowX: 'hidden',
-  overflowY: 'hidden',
-  overscrollBehavior: 'none',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-}
+  width: width,
+  height: height,
+})

@@ -1,7 +1,11 @@
 import { PropsWithChildren } from 'react'
-import { CanvasSize } from '../types'
 
-export const Container: React.FC<PropsWithChildren<{ size: CanvasSize }>> = ({
+export type ContainerSize = {
+  width: number
+  height: number
+}
+
+export const Container: React.FC<PropsWithChildren<{ size: ContainerSize }>> = ({
   size,
   children,
 }) => {
@@ -21,4 +25,9 @@ const styles = ({ width, height }: { width: number; height: number }): React.CSS
   overflowY: 'hidden',
   overscrollBehavior: 'none',
   color: 'white',
+  display: 'flex',
+  flexDirection: 'column',
+  flexWrap: 'nowrap',
+  alignContent: 'center',
+  justifyContent: 'center',
 })
