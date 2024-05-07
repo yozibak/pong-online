@@ -21,8 +21,8 @@ const WaitingAsHost: React.FC<{ getReady: () => void }> = ({ getReady }) => {
     })
   }, [getReady])
   return (
-    <div>
-      <h1>Waiting for player 2😌</h1>
+    <div style={{ width: '100%', fontSize: '1rem˝',  }}>
+      <div style={{ fontSize: '1.1rem' }}>Waiting for player 2 😌</div>
       <Invitation />
     </div>
   )

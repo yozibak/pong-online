@@ -6,10 +6,11 @@ export const Invitation = () => {
   return (
     <div
       onClick={() => copyToClipboard(invitationLink)}
-      style={{ fontSize: '0.88rem', fontStyle: 'italic' }}
+      style={{ fontStyle: 'italic', padding: '2em', fontSize: '.75rem' }}
     >
-      <div style={{ cursor: 'pointer' }}>🔗 INVITATION LINK: {invitationLink}</div>
+      <div>Send the invitation link:</div>
       <QRCode link={invitationLink} />
+      <div style={{ cursor: 'pointer', textDecoration: 'underline' }}>{invitationLink}</div>
     </div>
   )
 }
@@ -18,9 +19,13 @@ const QRCode = ({ link }: { link: string }) => {
   const ref = useRef<HTMLCanvasElement>(null)
   useEffect(() => {
     if (!ref.current) return
-    qrcode.toCanvas(ref.current, link)
+    qrcode.toCanvas(ref.current, link, { width: 200 })
   }, [ref, link])
-  return <canvas ref={ref}></canvas>
+  return (
+    <div style={{ padding: '1em' }}>
+      <canvas ref={ref}></canvas>
+    </div>
+  )
 }
 
 const copyToClipboard = async (link: string) => {

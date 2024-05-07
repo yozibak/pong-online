@@ -1,6 +1,6 @@
 import { inputBuffer } from '../domain'
 
-export const Control = () => {
+export const MobileControl = () => {
   if (window.innerWidth > 800) return <></>
   return (
     <div style={{ width: '100%', }}>

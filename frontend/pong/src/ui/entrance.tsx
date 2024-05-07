@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { PlayMode, PlayerNumber } from '../data/types'
 import { selectOfflineMode } from '../domain/match'
 import { onlineMultiPlayerSetup } from '../service'
-import { Waiting } from './waiting'
 import { isMobile } from '../service/control'
+import { Waiting } from './waiting'
 
 export const getPlayerNumber = (): PlayerNumber => {
   const urlParams = new URLSearchParams(window.location.search)
@@ -32,41 +32,43 @@ export const Entrance: React.FC<{ version: string; getReady: () => void }> = ({
 
   if (online) return <Waiting isGuest={isGuest} getReady={getReady} />
   return (
-    <div style={style}>
-      <h1>PONG</h1>
-      <div>version: {version}</div>
-      <div>Welcome! {isGuest ? `You are Player 2 (right side)` : ``}</div>
+    <div>
+      <div style={{ fontSize: '5em', lineHeight: 1 }}>PONG</div>
+      <div>ONLINE</div>
+      <br />
+      {isGuest ? <div>You are Player 2 (right side)</div> : <></>}
       <button style={btn} onClick={selectOnline}>
-        🏓 {isGuest ? `Join` : `multi-player (ONLINE)`} 🏓
+        🏓 {isGuest ? `JOIN` : `PLAY`} 🏓
       </button>
-      {!isGuest  ? (
+      {!isGuest && !isMobile() ? (
         <>
-          <button style={btn} onClick={() => selectOffline('offline-multi')}>
-            🏓 {`multi-player (OFFLINE)`} 🏓
+          <button
+            style={{ ...btn, fontSize: '1.2rem', textDecoration: 'none' }}
+            onClick={() => selectOffline('offline-multi')}
+          >
+            🏓 OFFLINE PLAY 🏓
           </button>
-          {/* <button style={btn} onClick={() => selectOffline('offline-solo')}>
-            🏓 {`single-player`} 🏓
-          </button> */}
         </>
       ) : (
         <></>
       )}
+      <br />
+      <div style={{ opacity: 0.6, fontWeight: 'normal', fontSize: '.7em', width: '100%' }}>
+        v{version}
+      </div>
     </div>
   )
 }
 
-const style: React.CSSProperties = {
-  color: 'white',
-  width: '100%',
-  fontSize: 40,
-}
-
 const btn: React.CSSProperties = {
   display: 'block',
-  margin: 10,
+  backgroundColor: 'transparent',
+  fontSize: '1.5rem',
+  color: 'inherit',
+  margin: '10px auto',
   padding: 10,
-  fontSize: 30,
-  backgroundColor: 'white',
   cursor: 'pointer',
-  borderRadius: 30
+  border: 'none',
+  textDecoration: 'underline',
+  fontFamily: 'inherit',
 }

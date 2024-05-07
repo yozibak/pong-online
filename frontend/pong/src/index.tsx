@@ -3,7 +3,7 @@ import pjson from '../package.json'
 import { GameCanvas, getCanvasContainerSize } from './ui/Pong'
 import { Container, ContainerSize } from './ui/container'
 import { Entrance } from './ui/entrance'
-import { Control } from './ui/control'
+import { MobileControl } from './ui/control'
 
 const VERSION = pjson.version
 
@@ -14,7 +14,7 @@ const PongGame: React.FC<{ size: ContainerSize }> = ({ size }) => {
       {ready ? (
         <>
           <GameCanvas size={getCanvasContainerSize(size)} />
-          <Control />
+          <MobileControl />
         </>
       ) : (
         <Entrance version={VERSION} getReady={() => setReady(true)} />
