@@ -3,8 +3,55 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Serverless Chat</title>
+    <title>Pong Online</title>
   </head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-0GG5C34P0P"></script>
+  <script>
+    window.dataLayer = window.dataLayer || []
+    function gtag() {
+      dataLayer.push(arguments)
+    }
+    gtag('js', new Date())
+
+    gtag('config', 'G-0GG5C34P0P')
+  </script>
+  <style>
+    :root {
+      touch-action: manipulation;
+      height: 100%;
+    }
+    html,
+    body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+    html {
+      font-family: 'Courier New', Courier, monospace;
+    }
+    body {
+      touch-action: manipulation;
+      letter-spacing: 0.2em;
+      width: 100vw;
+      height: 100vh;
+      overscroll-behavior-y: none;
+      padding: 0;
+      margin: 0;
+      background-color: black;
+    }
+    #root {
+      width: 100%;
+      margin: 0 auto;
+    }
+    canvas {
+      border: 1px solid black;
+      touch-action: manipulation;
+    }
+    div {
+      touch-action: manipulation;
+    }
+  </style>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
