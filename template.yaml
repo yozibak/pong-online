@@ -53,19 +53,6 @@ Resources:
         RuntimeVersion: 1.0.0
       CodeS3Location: ./backend/graphql/forwardMessage.js
 
-  MutationSendHandShake:
-    Type: AWS::AppSync::Resolver
-    DependsOn: Schema
-    Properties:
-      ApiId: !GetAtt GraphQLApi.ApiId
-      TypeName: Mutation
-      FieldName: sendHandShake
-      DataSourceName: !GetAtt ForwardMessageDataSource.Name
-      Runtime:
-        Name: APPSYNC_JS
-        RuntimeVersion: 1.0.0
-      CodeS3Location: ./backend/graphql/forwardMessage.js
-
   Schema:
     Type: AWS::AppSync::GraphQLSchema
     Properties:
