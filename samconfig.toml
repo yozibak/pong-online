@@ -46,7 +46,7 @@ template = "template-prod.yaml"
 [pipeline]
 [pipeline.deploy.parameters]
 capabilities = "CAPABILITY_NAMED_IAM"
-confirm_changeset = false
+confirm_changeset = true
 s3_prefix = "pong-online-prod"
 stack_name = "pong-online-pipeline"
 template = "pipeline/template.yaml"

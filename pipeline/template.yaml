@@ -383,6 +383,15 @@ Resources:
                   ]
               InputArtifacts:
                 - Name: TestFrontEndBuildAsZip
+            - Name: TestApproval
+              RunOrder: 5
+              ActionTypeId:
+                Category: Approval
+                Owner: AWS
+                Provider: Manual
+                Version: '1'
+              Configuration:
+                NotificationArn: !Ref NotificationTopic
 
         - Name: Deploy
           Actions:
@@ -528,8 +537,15 @@ Resources:
         Type: CODEPIPELINE
         BuildSpec: !Sub pipeline/deploy_frontend.yaml
 
+  NotificationTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: !Sub ${AppName}-Pipeline-NotificationTopic
+
 Outputs:
   ArtifactsBucket:
     Value: !Ref ArtifactsBucket
   Pipeline:
     Value: !Ref Pipeline
+  NotificationTopic:
+    Value: !Ref NotificationTopic
