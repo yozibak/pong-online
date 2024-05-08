@@ -4,12 +4,16 @@ phases:
   install:
     runtime-versions:
       nodejs: 18.x
+    commands:
+      - corepack enable
+      - corepack prepare pnpm@latest-8 --activate
+      - pnpm config set store-dir .pnpm-store
   build:
     commands:
       - ls
       - cd frontend/app
       - ls
-      - npm i
+      - pnpm i
       - npx --yes playwright install --with-deps chromium
       - PLAYWRIGHT_JUNIT_OUTPUT_NAME=results.xml npx playwright test --reporter=junit
 

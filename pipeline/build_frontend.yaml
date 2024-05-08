@@ -16,6 +16,9 @@ phases:
 artifacts:
   files:
     - frontend/app/**/*
+    - frontend/pong/**/*
+    - pnpm-workspace.yaml
+    - pnpm-lock.yaml
     - pipeline/*
     - tsconfig.json
   exclude-paths:
