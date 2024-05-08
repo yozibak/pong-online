@@ -71,6 +71,38 @@ Resources:
     Properties:
       ApiId: !GetAtt GraphQLApi.ApiId
       DefinitionS3Location: ./backend/graphql/schema.graphql
+  
+  GraphQLApiWAF:
+    Type: AWS::WAFv2::WebACL
+    Properties:
+      Name: !Sub ${AppName}-GraphQLApi-WAF-${Env}
+      DefaultAction:
+        Allow: {}
+      Scope: REGIONAL
+      VisibilityConfig:
+        CloudWatchMetricsEnabled: true
+        MetricName: !Sub ${AppName}-GraphQLApi-WAF-${Env}
+        SampledRequestsEnabled: true
+      Rules:
+        - Name: !Sub ${AppName}-GraphQLApi-WAF-${Env}-Throttle
+          Priority: 0
+          Action:
+            Block: {}
+          Statement:
+            RateBasedStatement:
+              AggregateKeyType: IP
+              EvaluationWindowSec: 120
+              Limit: 4000 # > 120 * 30 FPS
+          VisibilityConfig:
+            CloudWatchMetricsEnabled: true
+            MetricName: !Sub ${AppName}-GraphQLApi-WAF-${Env}-Throttle
+            SampledRequestsEnabled: true
+  
+  GraphQLApiWAFAssociation:
+    Type: AWS::WAFv2::WebACLAssociation
+    Properties:
+      WebACLArn: !GetAtt GraphQLApiWAF.Arn
+      ResourceArn: !GetAtt GraphQLApi.Arn
 
   WebContentBucket:
     Type: AWS::S3::Bucket
