@@ -16,6 +16,6 @@ export const BottomThreshold = DefaultHeight - EdgeThickness
 export const LeftThreshold = BarWidth + BarOffset
 export const RightThreshold = DefaultWidth - BarWidth - BarOffset
 
-export const GameID = 'GameID'
+// export const GameID = 'GameID'
 
 export const ScoreToWin = 7

@@ -1,19 +1,17 @@
-import { GameID } from '../config'
 import { GameStatus, PlayerNumber } from '../data/types'
 import { getRenderingState, inputBuffer } from '../domain'
 import { resolveStateAtFrame } from '../domain/events'
 import { initOnlineGame } from '../domain/match'
 import { getNetworkPayload } from '../domain/output'
 import { detectKeyControl } from './control'
-import { sendDataToServer } from './network'
-import { makeNetwork } from './network'
+import { makeNetwork, sendDataToServer } from './network'
 import { renderState } from './render/render'
 
 export const network = makeNetwork()
 
-export const onlineMultiPlayerSetup = (playerNumber: PlayerNumber) => {
-  initOnlineGame(playerNumber)
-  network.init(playerNumber, GameID)
+export const onlineMultiPlayerSetup = (playerNumber: PlayerNumber, gameID: string) => {
+  initOnlineGame(playerNumber, gameID)
+  network.init(playerNumber, gameID)
 }
 
 export const onlineGameStart = () => {

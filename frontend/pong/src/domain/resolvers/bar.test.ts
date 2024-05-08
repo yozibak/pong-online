@@ -2,7 +2,7 @@ import { BarVelocity } from '../../config'
 import { Bar, PlayerBars } from '../../data/types'
 import { resolveBarPosition, resolvePlayerBars } from './bar'
 
-test.only(`${resolvePlayerBars.name}`, () => {
+test(`${resolvePlayerBars.name}`, () => {
   const bars: PlayerBars = {
     1: {
       position: {

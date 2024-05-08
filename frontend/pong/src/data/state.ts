@@ -84,6 +84,9 @@ const reducers = {
   },
   abort: s => () => {
     s.gameStatus = 'aborted'
+  },
+  setGameID: s => (id: string) => {
+    s.gameID = id
   }
 } satisfies ReducerMap<PongState>
 

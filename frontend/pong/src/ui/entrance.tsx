@@ -1,27 +1,37 @@
-import { useState } from 'react'
-import { PlayMode, PlayerNumber } from '../data/types'
+import { createContext, useState } from 'react'
+import { PlayMode } from '../data/types'
 import { selectOfflineMode } from '../domain/match'
 import { onlineMultiPlayerSetup } from '../service'
 import { isMobile } from '../service/control'
+import { getPlayerNumberFromParams } from '../service/params'
+import { initGameID } from '../service/params/gameID'
 import { Waiting } from './waiting'
 
-export const getPlayerNumber = (): PlayerNumber => {
-  const urlParams = new URLSearchParams(window.location.search)
-  const number = Number(urlParams.get('player'))
-  if (number === 1 || number === 2) return number
-  return 1
+export const OnlineMatchContext = createContext<OnlineMatchData>({} as OnlineMatchData)
+
+type OnlineMatchData = ReturnType<typeof useOnlineMatch> & { getReady: () => void }
+
+const useOnlineMatch = () => {
+  const playerNumber = getPlayerNumberFromParams()
+  const gameID = initGameID(playerNumber)
+  const isGuest = playerNumber === 2
+  return {
+    playerNumber,
+    gameID,
+    isGuest,
+  }
 }
 
 export const Entrance: React.FC<{ version: string; getReady: () => void }> = ({
   version,
   getReady,
 }) => {
-  const playerNumber = getPlayerNumber()
-  const isGuest = playerNumber === 2
+  const { playerNumber, gameID, isGuest } = useOnlineMatch()
+
   const [online, setOnline] = useState(false)
 
   const selectOnline = () => {
-    onlineMultiPlayerSetup(playerNumber)
+    onlineMultiPlayerSetup(playerNumber, gameID)
     setOnline(true)
   }
 
@@ -30,7 +40,12 @@ export const Entrance: React.FC<{ version: string; getReady: () => void }> = ({
     getReady()
   }
 
-  if (online) return <Waiting isGuest={isGuest} getReady={getReady} />
+  if (online)
+    return (
+      <OnlineMatchContext.Provider value={{ playerNumber, gameID, isGuest, getReady }}>
+        <Waiting />
+      </OnlineMatchContext.Provider>
+    )
   return (
     <div>
       <div style={{ fontSize: '5em', lineHeight: 1 }}>PONG</div>

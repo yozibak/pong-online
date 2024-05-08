@@ -1,8 +1,11 @@
 import qrcode from 'qrcode'
-import { useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef } from 'react'
+import { getInvitationLink } from '../service/params'
+import { OnlineMatchContext } from './entrance'
 
 export const Invitation = () => {
-  const invitationLink = `${window.location.origin}/?player=2`
+  const { gameID } = useContext(OnlineMatchContext)
+  const invitationLink = getInvitationLink(gameID)
   return (
     <div
       onClick={() => copyToClipboard(invitationLink)}

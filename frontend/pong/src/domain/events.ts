@@ -17,6 +17,7 @@ export const resolveStateAtFrame = () => {
     if (e instanceof BadConnectionError) {
       store.abort()
     } else {
+      // eslint-disable-next-line no-console
       console.error(e)
       throw e
     }

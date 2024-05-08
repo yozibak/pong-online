@@ -7,6 +7,7 @@ export type PongState = {
   frameCount: number
   startTime: number
   playMode?: PlayMode
+  gameID?: string
 }
 
 export type GameStatus = 'ready' | 'started' | 'gameset' | 'aborted'

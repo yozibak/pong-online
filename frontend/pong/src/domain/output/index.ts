@@ -1,4 +1,3 @@
-import { GameID } from '../../config'
 import { store } from '../../data'
 import { PlayerCommand, Position } from '../../data/types'
 
@@ -31,8 +30,12 @@ export enum EventSignal {
 
 export const getNetworkPayload = (): NetworkPayload => {
   const playerNumber = store.current.playerNumber
+  const gameID = store.current.gameID
+  if (!gameID) {
+    throw Error(`game id is not set`)
+  }
   return {
-    gameID: GameID,
+    gameID,
     playerNumber,
     ball: {
       position: store.current.ball.position.position,

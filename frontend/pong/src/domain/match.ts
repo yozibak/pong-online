@@ -19,10 +19,11 @@ export const selectOfflineMode = (mode: PlayMode) => {
   store.setStartTime()
 }
 
-export const initOnlineGame = (pn: PlayerNumber) => {
+export const initOnlineGame = (pn: PlayerNumber, gameID: string) => {
   inputBuffer.playerNumber = pn
   store.setPlayer(pn)
   store.setPlayMode('online-multi')
+  store.setGameID(gameID)
 }
 
 export const abortOnlineGame = () => {
